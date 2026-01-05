@@ -8,7 +8,7 @@ using static IdentityServer4.IdentityServerConstants;
 
 namespace Udemy.IdentityServer.Controllers
 {
-    [Authorize(LocalApi.PolicyName)]
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class RegistersController :ControllerBase

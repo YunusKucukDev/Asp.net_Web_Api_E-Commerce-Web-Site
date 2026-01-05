@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Udemy.WebUI.Services;
+
 namespace Udemy.WebUI
 {
     public class Program
@@ -5,6 +8,20 @@ namespace Udemy.WebUI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, opt =>
+            {
+                opt.LoginPath = "/Login/Index";
+                opt.LogoutPath = "/Login/Logout";
+                opt.AccessDeniedPath = "/Pages/AccesDenied";
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.SameSite = SameSiteMode.Strict;
+                opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                opt.Cookie.Name = "MultiShopJwt";
+            });
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ILoginService, LoginService>();
 
             builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
@@ -22,7 +39,7 @@ namespace Udemy.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
