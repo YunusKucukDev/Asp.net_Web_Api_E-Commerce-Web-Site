@@ -1,4 +1,7 @@
-﻿<div class="col-md-6">
+﻿@using Udemy.DtoLayer.CommnetDtos
+@model CreateCommentDto
+
+<div class="col-md-6">
 	<h4 class="mb-4">Yorum Bırakın</h4>
 	<small>Yorumunuzn Geçerli olamsı için geçerli bir Email adresi giriniz*</small>
 	<div class="d-flex my-3">
@@ -12,7 +15,7 @@
 		</div>
 	</div>
 	<form method="post" asp-action="AddComment" asp-controller="ProductList">
-		
+		<input type="hidden" asp-for="ProductId"/>
 		<div class="form-group">
 			<label for="name">İsminiz*</label>
 			<input type="text" class="form-control" id="name" name="NameSurname">

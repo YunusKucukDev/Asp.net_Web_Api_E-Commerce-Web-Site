@@ -16,7 +16,7 @@ namespace Udemy.WebUI.ViewComponents.ProductDetailViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7038/api/Comments/CommentListByProductId?id="+id);
+            var responseMessage = await client.GetAsync("https://localhost:7028/api/Comments/CommentListByProductId?id="+id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
