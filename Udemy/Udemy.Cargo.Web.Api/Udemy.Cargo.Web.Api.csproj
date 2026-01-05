@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Udemy.Cargo.BusinessLayer\Udemy.Cargo.BusinessLayer.csproj" />
+    <ProjectReference Include="..\Udemy.Cargo.DataAccessLayer\Udemy.Cargo.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Udemy.Cargo.DtoLayer\Udemy.Cargo.DtoLayer.csproj" />
+    <ProjectReference Include="..\Udemy.Cargo.EntityLayer\Udemy.Cargo.EntityLayer.csproj" />
+  </ItemGroup>
+
+</Project>

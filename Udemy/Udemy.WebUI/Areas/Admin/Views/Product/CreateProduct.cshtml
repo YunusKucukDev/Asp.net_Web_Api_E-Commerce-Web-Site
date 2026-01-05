@@ -1,0 +1,41 @@
+﻿@using Udemy.DtoLayer.CatalogDtos.ProductDtos
+@model CreateProductDto
+
+@{
+	ViewData["Title"] = "Create Category";
+	Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="content container-fluid">
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="chart-box">
+				<h4>Ürün Ekleme sayfası</h4>
+				<br />
+				<div class="bs-example" data-example-id="bordered-table">
+					<form asp-action="CreateProduct" method="post">
+						<label>Ürün Adı</label>
+						<input type="text" class="form-control" asp-for="ProductName" />
+						<label>Ürün Fiyatı</label>
+						<input type="text" class="form-control" asp-for="ProductPrice" />
+						<label>Ürün Foroğaf</label>
+						<input type="text" class="form-control" asp-for="ProductImageUrl" />
+						<label>Kategori</label>
+						<label>Kategori</label>
+						<select asp-for="CategoryId"
+								asp-items="ViewBag.CategoryValues"
+								class="form-control">
+							<option value="">Kategori Seçiniz</option>
+						</select>
+						<label>Ürün Açıklaması</label>
+						<textarea class="form-control" asp-for="ProductDescription" rows="5"> </textarea>
+						<br />
+						<button class="btn btn-primary">Ürünü  Ekle</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>

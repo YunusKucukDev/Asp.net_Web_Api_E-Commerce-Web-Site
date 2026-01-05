@@ -1,0 +1,6 @@
+@Udemy.Discount_HostAddress = http://localhost:5109
+
+GET {{Udemy.Discount_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

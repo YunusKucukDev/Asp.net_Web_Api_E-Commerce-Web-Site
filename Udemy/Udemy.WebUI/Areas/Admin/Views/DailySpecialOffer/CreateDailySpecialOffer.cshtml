@@ -1,0 +1,35 @@
+﻿@using Udemy.DtoLayer.CatalogDtos.DailySpecialOfferDto
+@model CreateDailySpecialOfferDto
+
+@{
+    ViewData["Title"] = "Create Category";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="chart-box">
+                <h4>Günlük İndirim Kodu Ekleme sayfası</h4>
+                <br />
+                <div class="bs-example" data-example-id="bordered-table">
+                    <form method="post">
+                        <label>Başlık</label>
+                        <input type="text" class="form-control" asp-for="Title" />
+                        <br />
+                        <label>Alt Başlık</label>
+                        <input type="text" class="form-control" asp-for="Subtitle" />
+                        <br />
+                        <label>Resim URL</label>
+                        <input type="text" class="form-control" asp-for="ImageUrl" />
+                        <br />
+                        <button class="btn btn-primary">Günlük İndirim Kodu  Ekle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+

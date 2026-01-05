@@ -1,0 +1,43 @@
+﻿
+@using Udemy.DtoLayer.CatalogDtos.ProductImagesDtos
+@model UpdateProductsImageDto
+
+@{
+	ViewData["Title"] = "UpdateCategory";
+	Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="content container-fluid">
+	<div class="row">
+		<div class="col-md-3"></div> @*Ortalamak İçin*@
+		<div class="col-md-6 ">
+			<div class="chart-box">
+				<h4 class="mb-3 text-center">Ürün Görselleri  Güncelleme Sayfası</h4>
+				<form  method="post">
+					<input type="hidden" class="form-control" asp-for="ProductImageId">
+					<input type="hidden" class="form-control" asp-for="ProductId">
+					<div class="form-group">
+						<label>Resim 1</label>
+						<input type="text" class="form-control" asp-for="Image1">
+					</div>
+					<div class="form-group">
+						<label>Resim 2</label>
+						<input type="text" class="form-control" asp-for="Image2">
+					</div>
+					<div class="form-group">
+						<label>Resim 3</label>
+						<input type="text" class="form-control" asp-for="Image3">
+					</div>
+					<div class="form-group">
+						<label>Resim 4</label>
+						<input type="text" class="form-control" asp-for="Image4">
+					</div>
+					<button type="submit" class="btn btn-success btn-rounded">Ürün görsellerini güncelle</button>
+				</form>
+			</div>
+			<div class="col-md-3 "></div> @*Ortalamak İçin*@
+		</div>
+	</div>
+</section>
+
+

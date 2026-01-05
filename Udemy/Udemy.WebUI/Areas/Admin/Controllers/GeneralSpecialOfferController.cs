@@ -1,0 +1,121 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
+using Udemy.DtoLayer.CatalogDtos.GeneralSpecialOfferDto;
+
+namespace Udemy.WebUI.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [AllowAnonymous]
+    [Route("Admin/GeneralSpecialOffer")]
+    public class GeneralSpecialOfferController : Controller
+    {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public GeneralSpecialOfferController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
+        [Route("Index")]
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v1 = "Anasayfa";
+            ViewBag.v2 = "Kategoriler";
+            ViewBag.v3 = "Kategori listesi";
+
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7070/api/GeneralSpecialOffer");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<ResultGeneralSpecialOfferDto>>(jsonData);
+                return View(values);
+            }
+
+            return View();
+        }
+
+
+        [Route("CreateGeneralSpecialOffer")]
+        [HttpGet]
+        public IActionResult CreateGeneralSpecialOffer()
+        {
+
+            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v1 = "Anasayfa";
+            ViewBag.v2 = "Kategoriler";
+            ViewBag.v3 = "Yeni Kategori Girişi";
+            return View();
+
+        }
+
+        [Route("CreateGeneralSpecialOffer")]
+        [HttpPost]
+        public async Task<IActionResult> CreateGeneralSpecialOffer(CreateGeneralSpecialOfferDto createGeneralSpecialOfferDto)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var jsonData = JsonConvert.SerializeObject(createGeneralSpecialOfferDto);
+            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PostAsync("https://localhost:7070/api/GeneralSpecialOffer", stringContent);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "GeneralSpecialOffer", new { area = "Admin" });
+            }
+
+            return View();
+        }
+
+        [Route("DeleteGeneralSpecialOffer/{id}")]
+        public async Task<IActionResult> DeleteGeneralSpecialOffer(string id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.DeleteAsync("https://localhost:7070/api/GeneralSpecialOffer?id=" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "GeneralSpecialOffer", new { area = "Admin" });
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Route("UpdateGeneralSpecialOffer/{id}")]
+        public async Task<IActionResult> UpdateGeneralSpecialOffer(string id)
+        {
+
+            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v1 = "Anasayfa";
+            ViewBag.v2 = "Kategoriler";
+            ViewBag.v3 = "Kategori Güncelle";
+
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:7070/api/GeneralSpecialOffer/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<UpdateGeneralSpecialOfferDto>(jsonData);
+                return View(values);
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [Route("UpdateGeneralSpecialOffer/{id}")]
+        public async Task<IActionResult> UpdateGeneralSpecialOffer(UpdateGeneralSpecialOfferDto dto)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var jsonData = JsonConvert.SerializeObject(dto);
+            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PutAsync("https://localhost:7070/api/GeneralSpecialOffer/", stringContent);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "GeneralSpecialOffer", new { area = "Admin" });
+            }
+            return View();
+        }
+    }
+}

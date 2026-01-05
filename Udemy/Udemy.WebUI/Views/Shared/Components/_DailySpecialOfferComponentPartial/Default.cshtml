@@ -1,0 +1,31 @@
+﻿@model List<ResultDailySpecialOfferDto>
+
+<div id="DailyOfferCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+
+            <div class="carousel-item @(i == 0 ? "active" : "")">
+                <div class="product-offer mb-30" style="height: 200px;">
+                    <img class="img-fluid" src="@item.ImageUrl" alt="">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase">@item.Title</h6>
+                        <h3 class="text-white mb-3">@item.Subtitle</h3>
+                        <a href="#" class="btn btn-primary">Kodu Kullan</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <a class="carousel-control-prev" href="#DailyOfferCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+
+    <a class="carousel-control-next" href="#DailyOfferCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>

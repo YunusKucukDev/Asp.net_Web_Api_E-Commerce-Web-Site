@@ -1,0 +1,68 @@
+﻿@using Udemy.DtoLayer.CatalogDtos
+@model List<ResultAboutDto>
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+	int count = 0;
+}
+
+<section class="content container-fluid">
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="chart-box">
+				<h4>Hakkımda Listesi</h4>
+				<p>Hakkımda ile ilgili işlemlerinizi AŞağıdaki tablo üzerinden düzenleyebilirsiniz</p>
+				<div class="bs-example" data-example-id="bordered-table">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Açıklama</th>
+								<th>Adress</th>
+								<th>Email</th>
+								<th>Telefon</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							@foreach (var item in Model)
+							{
+								count++;
+								<tr>
+									<th scope="row">@count</th>
+									<td>@item.Descrition</td>
+									<td>
+										@item.Address
+									</td>
+									<td>
+										@item.Email
+									</td>
+									<td>
+										@item.Phone
+									</td>
+									<td><a href="/Admin/About/DeleteAbout/@item.AboutId" class="btn btn-danger">Sil</a></td>
+									<td><a href="/Admin/About/UpdateAbout/@item.AboutId" class="btn btn-success">Güncelle</a></td>
+								</tr>
+							}
+						</tbody>
+					</table>
+					@if (!Model.Any())
+					{
+						<a href="/Admin/About/CreateAbout" class="btn btn-primary">
+							Yeni Hakkımızda Bilgisi Girişi
+						</a>
+					}
+					else
+					{
+						<a href="/Admin/About/Index" disabled class="btn btn-primary">
+							Yeni Hakkımızda Bilgisi Girişi
+						</a>
+					}
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+

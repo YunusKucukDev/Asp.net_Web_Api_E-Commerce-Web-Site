@@ -1,0 +1,53 @@
+﻿
+@using Udemy.DtoLayer.CatalogDtos.CategoryDtos
+@using Udemy.DtoLayer.CatalogDtos.DailySpecialOfferDto
+@model List<ResultDailySpecialOfferDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="chart-box">
+                <h4>Günlük Fırsat Kuponları Listesi</h4>
+                <p>Günlük Fırsat Kuponları ile ilgili işlemlerinizi AŞağıdaki tablo üzerinden düzenleyebilirsiniz</p>
+                <div class="bs-example" data-example-id="bordered-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Başlık</th>
+                                <th>Alt Başlık</th>
+                                
+                                <th>Sil</th>
+                                <th>Güncelle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <th scope="row">@count</th>
+                                    <td>@item.Title</td>
+                                    <td>@item.Subtitle</td>
+                                   
+                                    <td><a href="/Admin/DailySpecialOffer/DeleteDailySpecialOffer/@item.DailyspecialOfferId" class="btn btn-danger">Sil</a></td>
+                                    <td><a href="/Admin/DailySpecialOffer/UpdateDailySpecialOffer/@item.DailyspecialOfferId" class="btn btn-success">Güncelle</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a href="/Admin/DailySpecialOffer/CreateDailySpecialOffer" class="btn btn-primary">Yeni Kategori Girişi</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+

@@ -1,0 +1,6 @@
+@Udemy.Comment_HostAddress = http://localhost:5075
+
+GET {{Udemy.Comment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
