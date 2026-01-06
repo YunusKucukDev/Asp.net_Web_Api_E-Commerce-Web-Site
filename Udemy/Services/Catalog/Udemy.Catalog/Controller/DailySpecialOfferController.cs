@@ -7,7 +7,7 @@ using Udemy.Catalog.Services.DailyspecialOfferService;
 
 namespace Udemy.Catalog.Controller
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DailySpecialOfferController : ControllerBase

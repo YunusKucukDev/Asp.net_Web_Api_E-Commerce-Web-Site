@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.Catalog.DTOs.GeneralSpecialOfferDtos;
 using Udemy.Catalog.Services.GenerealSpecialOfferService;
 
 namespace Udemy.Catalog.Controller
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GeneralSpecialOfferController : ControllerBase

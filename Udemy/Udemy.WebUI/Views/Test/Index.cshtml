@@ -1,0 +1,18 @@
+﻿@using Udemy.DtoLayer.CatalogDtos.CategoryDtos
+@model List<ResultCategoryDto>
+
+<div>
+	<table>
+    <tr>
+        <th>kategori adı</th>
+    </tr>
+    @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.CategoryName
+                </td>
+            </tr>
+        }
+</table>
+</div>

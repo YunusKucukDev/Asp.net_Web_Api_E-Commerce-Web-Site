@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.Catalog.DTOs.ProductDetailDtos;
 using Udemy.Catalog.DTOs.ProductImagesDtos;
@@ -7,6 +8,7 @@ using Udemy.Catalog.Services.ProductImageServices;
 
 namespace Udemy.Catalog.Controller
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductImagesController : ControllerBase

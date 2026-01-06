@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Udemy.IdentityServer.Settings;
 using Udemy.WebUI.Services;
+using Udemy.WebUI.Services.Concrete;
+using Udemy.WebUI.Services.Interfaces;
 
 namespace Udemy.WebUI
 {
@@ -20,11 +24,22 @@ namespace Udemy.WebUI
                 opt.Cookie.Name = "MultiShopJwt";
             });
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opt =>
+            {
+                opt.LoginPath = "/Login/Index";
+                opt.ExpireTimeSpan = TimeSpan.FromDays(5);
+                opt.Cookie.Name = "UdemyCookie";
+                opt.SlidingExpiration = true;
+            });
+
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddHttpClient<IIdentityService, IdentityService>();
 
             builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.Configure<ClientSettings>(builder.Configuration.GetSection("ClientSettings"));
 
             var app = builder.Build();
 

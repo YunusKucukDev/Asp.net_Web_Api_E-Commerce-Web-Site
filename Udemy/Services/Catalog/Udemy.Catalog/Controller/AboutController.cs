@@ -5,7 +5,7 @@ using Udemy.Catalog.Services.AboutServices;
 
 namespace Udemy.Catalog.Controller
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AboutController : ControllerBase

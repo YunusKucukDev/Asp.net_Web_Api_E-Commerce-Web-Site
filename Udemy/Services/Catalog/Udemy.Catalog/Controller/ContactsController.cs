@@ -6,9 +6,10 @@ using Udemy.Catalog.Services.ContactServices;
 
 namespace Udemy.Catalog.Controller
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    
     public class ContactsController : ControllerBase
     {
         private readonly IContactService _ContactService;

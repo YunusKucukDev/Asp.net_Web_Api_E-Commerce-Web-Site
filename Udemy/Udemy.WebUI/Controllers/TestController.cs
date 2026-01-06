@@ -3,19 +3,19 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 
-namespace Udemy.WebUI.ViewComponents.UILayoutViewComponents
+namespace Udemy.WebUI.Controllers
 {
-    public class _NavbarUILayoutComponentPartial : ViewComponent
+    public class TestController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public _NavbarUILayoutComponentPartial(IHttpClientFactory httpClientFactory)
+        public TestController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
-
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IActionResult>  Index()
         {
+
             string token = "";
             using (var httpClient = new HttpClient())
             {

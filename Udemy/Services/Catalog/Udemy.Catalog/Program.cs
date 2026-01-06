@@ -25,12 +25,16 @@ namespace Udemy.Catalog
             var builder = WebApplication.CreateBuilder(args);
 
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
-            {
-                opt.Authority = builder.Configuration["IdentityServerUrl"];
-                opt.RequireHttpsMetadata = false;
-                opt.Audience = "ResourceCatalog";
-            });
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.Audience = "ResourceCatalog";
+
+        options.RequireHttpsMetadata = false;
+
+       
+    });
 
 
             builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -56,7 +60,7 @@ namespace Udemy.Catalog
             });
 
             builder.Services.AddControllers();
-            
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

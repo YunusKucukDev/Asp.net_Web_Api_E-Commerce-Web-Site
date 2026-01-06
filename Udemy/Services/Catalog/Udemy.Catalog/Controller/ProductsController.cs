@@ -8,7 +8,7 @@ using static MongoDB.Driver.WriteConcern;
 
 namespace Udemy.Catalog.Controller
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

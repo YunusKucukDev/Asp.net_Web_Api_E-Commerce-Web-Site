@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IdentityServer\Udemy.IdentityServer\Udemy.IdentityServer.csproj" />
     <ProjectReference Include="..\Udemy.DtoLayer\Udemy.DtoLayer.csproj" />
   </ItemGroup>
 

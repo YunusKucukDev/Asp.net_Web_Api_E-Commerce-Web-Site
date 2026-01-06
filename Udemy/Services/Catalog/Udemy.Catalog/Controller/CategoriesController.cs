@@ -6,7 +6,7 @@ using Udemy.Catalog.Services.CategoryServices;
 
 namespace Udemy.Catalog.Controller
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
