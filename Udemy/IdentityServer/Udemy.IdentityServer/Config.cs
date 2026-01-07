@@ -18,6 +18,10 @@ namespace Udemy.IdentityServer
             new ApiResource("ResourceOrder"){Scopes ={"OrderFullPermission"}},
             new ApiResource("ResourceCargo"){Scopes ={"CargoFullPermission"}},
             new ApiResource("ResourceBasket"){Scopes ={"BasketFullPermission"}},
+            new ApiResource("ResourceComment"){Scopes ={"CommentFullPermission"}},
+            new ApiResource("ResourcePayment"){Scopes ={"PaymentFullPermission"}},
+            new ApiResource("ResourceImages"){Scopes ={"ImagesFullPermission"}},
+            new ApiResource("ResourceOcelot"){Scopes ={"OcelotFullPermission"}},
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -37,6 +41,10 @@ namespace Udemy.IdentityServer
             new ApiScope("OrderFullPermission","Full authority for order operations"),
             new ApiScope("CargoFullPermission","Full authority for Cargo operations"),
             new ApiScope("BasketFullPermission","Full authority for basket operations"),
+            new ApiScope("CommentFullPermission","Full authority for Comment operations"),
+            new ApiScope("PaymentFullPermission","Full authority for Payment operations"),
+            new ApiScope("ImagesFullPermission","Full authority for Images operations"),
+            new ApiScope("OcelotFullPermission","Full authority for ocelot operations"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -49,7 +57,7 @@ namespace Udemy.IdentityServer
                 ClientName ="Udemy Visitor User",
                 AllowedGrantTypes = GrantTypes.ClientCredentials, // Neye izin verdiğiyle ilgili property
                 ClientSecrets ={new Secret("udemySecret".Sha256())},
-                AllowedScopes = {"CatalogFullPermission","CatalogFullPermission"} //Kapsamlar
+                AllowedScopes = {"CatalogFullPermission","OcelotFullPermission","CommentFullPermission", "ImagesFullPermission" } //Kapsamlar
             },
 
             //Manager
@@ -59,7 +67,7 @@ namespace Udemy.IdentityServer
                 ClientName="Udemy Manager User",
                 AllowedGrantTypes =GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("udemySecret".Sha256())},
-                AllowedScopes ={ "CatalogReadPermission" , "CatalogFullPermission", "BasketFullPermission" }
+                AllowedScopes ={ "ImagesFullPermission", "CatalogReadPermission" , "CatalogFullPermission", "BasketFullPermission", "OcelotFullPermission", "CommentFullPermission", "PaymentFullPermission" }
 
             },
 
@@ -70,7 +78,7 @@ namespace Udemy.IdentityServer
                 ClientName="Udemy Admin User",
                 AllowedGrantTypes =GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("udemySecret".Sha256())},
-                AllowedScopes ={ "CatalogReadPermission" , "CatalogFullPermission","DiscountFullPermission", "OrderFullPermission","CargoFullPermission","BasketFullPermission",
+                AllowedScopes ={ "OcelotFullPermission","ImagesFullPermission","PaymentFullPermission","CatalogReadPermission" , "CatalogFullPermission","DiscountFullPermission", "OrderFullPermission","CargoFullPermission","BasketFullPermission","CommentFullPermission",
                  IdentityServerConstants.LocalApi.ScopeName,
                  IdentityServerConstants.StandardScopes.Email,
                  IdentityServerConstants.StandardScopes.OpenId,

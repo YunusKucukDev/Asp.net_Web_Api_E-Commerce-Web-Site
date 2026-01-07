@@ -26,15 +26,11 @@ namespace Udemy.Catalog
 
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Authority = "https://localhost:5001";
-        options.Audience = "ResourceCatalog";
-
-        options.RequireHttpsMetadata = false;
-
-       
-    });
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "https://localhost:5001";
+                options.Audience = "ResourceCatalog";
+            });
 
 
             builder.Services.AddScoped<ICategoryService, CategoryService>();
