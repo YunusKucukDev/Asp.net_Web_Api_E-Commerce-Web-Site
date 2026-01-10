@@ -1,4 +1,4 @@
-﻿namespace Udemy.WebUI.Services
+﻿namespace Udemy.WebUI.Services.Interfaces
 {
     public interface ILoginService
     {

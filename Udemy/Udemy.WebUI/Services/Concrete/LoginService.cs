@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
+using Udemy.WebUI.Services.Interfaces;
 
-namespace Udemy.WebUI.Services
+namespace Udemy.WebUI.Services.Concrete
 {
     public class LoginService : ILoginService
     {

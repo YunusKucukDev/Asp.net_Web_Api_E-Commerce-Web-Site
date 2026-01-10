@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Udemy.IdentityServer.Settings;
-using Udemy.WebUI.Services;
+using Udemy.WebUI.Handlers;
 using Udemy.WebUI.Services.Concrete;
 using Udemy.WebUI.Services.Interfaces;
+using Udemy.WebUI.Settings;
 
 namespace Udemy.WebUI
 {
@@ -40,6 +41,15 @@ namespace Udemy.WebUI
             builder.Services.AddControllersWithViews();
 
             builder.Services.Configure<ClientSettings>(builder.Configuration.GetSection("ClientSettings"));
+            builder.Services.Configure<ServiceApiSettings>(builder.Configuration.GetSection("ServiceApiSettings"));
+
+            builder.Services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+
+            var values = builder.Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+            builder.Services.AddHttpClient<IUserService, UserService>(opt =>
+            {
+                opt.BaseAddress = new Uri(values.IdentityServerUrl);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             var app = builder.Build();
 
