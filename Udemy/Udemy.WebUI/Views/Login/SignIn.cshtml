@@ -11,5 +11,10 @@
     <title>SignIn</title>
 </head>
 <body>
+    asdasd
+    <form asp-controller="Login" asp-action="SignIn" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit">POST TEST</button>
+    </form>
 </body>
 </html>

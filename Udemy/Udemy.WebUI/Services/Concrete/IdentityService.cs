@@ -91,7 +91,7 @@ namespace Udemy.WebUI.Services.Concrete
                 UserName = dto.Username,
                 Password = dto.Password,
                 Address = discoveryEndPoint.TokenEndpoint,
-                Scope = "openid profile offline_access"
+               
             };
 
             var token = await _httpClient.RequestPasswordTokenAsync(passwordTokenRequest);

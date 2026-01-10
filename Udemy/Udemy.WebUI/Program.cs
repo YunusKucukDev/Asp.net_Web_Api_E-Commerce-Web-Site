@@ -19,7 +19,6 @@ namespace Udemy.WebUI
                 opt.LoginPath = "/Login/Index";
                 opt.LogoutPath = "/Login/Logout";
                 opt.AccessDeniedPath = "/Pages/AccesDenied";
-                opt.Cookie.HttpOnly = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 opt.Cookie.Name = "MultiShopJwt";
@@ -75,7 +74,7 @@ namespace Udemy.WebUI
             
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Default}/{action=Index}/{id?}"
+                pattern: "{controller=Login}/{action=SignIn}/{id?}"
             );
 
             app.Run();
