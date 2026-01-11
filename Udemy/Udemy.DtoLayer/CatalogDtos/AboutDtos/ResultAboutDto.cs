@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Udemy.DtoLayer.CatalogDtos
+namespace Udemy.DtoLayer.CatalogDtos.AboutDtos
 {
     public class ResultAboutDto
     {

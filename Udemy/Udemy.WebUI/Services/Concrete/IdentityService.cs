@@ -96,6 +96,11 @@ namespace Udemy.WebUI.Services.Concrete
 
             var token = await _httpClient.RequestPasswordTokenAsync(passwordTokenRequest);
 
+            if (token.IsError)
+            {
+                throw new Exception(token.ErrorDescription ?? token.Error);
+            }
+
             var userInfoRequest = new UserInfoRequest
             {
                 Token = token.AccessToken,

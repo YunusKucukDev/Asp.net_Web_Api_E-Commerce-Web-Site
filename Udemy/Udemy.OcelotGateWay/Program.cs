@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -10,26 +10,34 @@ namespace Udemy.OcelotGateWay
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("OcelotAuthenticationSchemeKey",opt =>
-            {
-                opt.Authority = builder.Configuration["IdentityServerUrl"];
-                opt.Audience = "ResourceOcelot";
-            });
+            builder.Services
+                .AddAuthentication()
+                .AddJwtBearer("OcelotAuthenticationSchemeKey", opt =>
+                {
+                    opt.Authority = builder.Configuration["IdentityServerUrl"];
+                    opt.Audience = "ResourceOcelot";
+                    opt.RequireHttpsMetadata = false;
+                });
 
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("ocelot.json")
+                .Build();
 
-            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("ocelot.json").Build();
             builder.Services.AddOcelot(configuration);
-
-
-
 
             var app = builder.Build();
 
+            app.UseHttpsRedirection();
+
+            /* 🔴 EKSİK OLANLAR */
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            /* Ocelot EN SON */
             app.UseOcelot();
 
-            app.MapGet("/", () => "Hello World!");
-            
             app.Run();
+
         }
     }
 }

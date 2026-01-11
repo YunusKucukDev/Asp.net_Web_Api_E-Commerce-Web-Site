@@ -3,40 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.OfferDiscountDto;
+using Udemy.WebUI.Services.CatalogServices.OfferDiscountservices;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/OfferDiscount")]
     public class OfferDiscountController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOfferDiscountService _offerDiscountService;
 
-        public OfferDiscountController(IHttpClientFactory httpClientFactory)
+        public OfferDiscountController(IOfferDiscountService offerDiscountService)
         {
-            _httpClientFactory = httpClientFactory;
+            _offerDiscountService = offerDiscountService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Kategori listesi";
+            ViewBag.v2 = "İndirimler";
+            ViewBag.v3 = "İndirimler listesi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/OfferDiscount");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultOfferDiscountDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _offerDiscountService.GetAllOfferDiscountAsync();
+            return View(values);
         }
 
 
@@ -45,10 +37,10 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         public IActionResult CreateOfferDiscount()
         {
 
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Yeni Kategori Girişi";
+            ViewBag.v2 = "İndirimler";
+            ViewBag.v3 = "İndirimler Girişi";
             return View();
 
         }
@@ -57,28 +49,15 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOfferDiscount(CreateOfferDiscountDto createOfferDiscountDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createOfferDiscountDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7070/api/OfferDiscount", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
-            }
-
-            return View();
+            await _offerDiscountService.CreateOfferDiscountAsync(createOfferDiscountDto);
+            return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
         }
 
         [Route("DeleteOfferDiscount/{id}")]
         public async Task<IActionResult> DeleteOfferDiscount(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync("https://localhost:7070/api/OfferDiscount?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
-            }
-            return View();
+            await _offerDiscountService.DeleteOfferDiscountAsync(id);
+            return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
         }
 
         [HttpGet]
@@ -86,20 +65,13 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateOfferDiscount(string id)
         {
 
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Kategori Güncelle";
+            ViewBag.v2 = "İndirimler";
+            ViewBag.v3 = "İndirimler Güncelle";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/OfferDiscount/" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateOfferDiscountDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _offerDiscountService.GetByIdOfferDiscountAsync(id);
+            return View(values);
         }
 
 
@@ -107,15 +79,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("UpdateOfferDiscount/{id}")]
         public async Task<IActionResult> UpdateOfferDiscount(UpdateOfferDiscountDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7070/api/OfferDiscount/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
-            }
-            return View();
+            await _offerDiscountService.UpdateOfferDiscountAsync(dto);
+            return RedirectToAction("Index", "OfferDiscount", new { area = "Admin" });
         }
     }
 }

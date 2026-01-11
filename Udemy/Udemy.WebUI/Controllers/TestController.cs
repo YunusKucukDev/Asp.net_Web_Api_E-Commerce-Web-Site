@@ -2,16 +2,19 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
 
 namespace Udemy.WebUI.Controllers
 {
     public class TestController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICategoryService _categoryService;
 
-        public TestController(IHttpClientFactory httpClientFactory)
+        public TestController(IHttpClientFactory httpClientFactory, ICategoryService categoryService)
         {
             _httpClientFactory = httpClientFactory;
+            _categoryService = categoryService;
         }
         public async Task<IActionResult>  Index()
         {
@@ -55,5 +58,23 @@ namespace Udemy.WebUI.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> Deneme()
+        {
+            try
+            {
+                var rvalues = await _categoryService.GetAllCategoryAsync();
+                return View(rvalues);
+            }
+            catch (Exception ex)
+            {
+                return Content(
+                    $"HATA OLUŞTU\n\n" +
+                    $"Mesaj: {ex.Message}\n\n" +
+                    $"StackTrace:\n{ex.StackTrace}"
+                );
+            }
+        }
+
     }
 }

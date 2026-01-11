@@ -7,7 +7,7 @@ using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 
 namespace Udemy.DtoLayer.CatalogDtos.ProductDtos
 {
-    public class ResultProductWithCategoryDto
+    public class ResultProductsWithCategoryDto
     {
         public string ProductId { get; set; }
 

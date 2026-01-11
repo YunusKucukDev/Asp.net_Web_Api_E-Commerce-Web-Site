@@ -6,19 +6,23 @@ using System.Net.Http;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 using Udemy.DtoLayer.CatalogDtos.ProductDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
+using Udemy.WebUI.Services.CatalogServices.ProductServices;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/Product")]
-    public class ProductController :Controller
+    public class ProductController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public ProductController(IHttpClientFactory httpClientFactory)
+        public ProductController(IProductService productService, ICategoryService categoryService)
         {
-            _httpClientFactory = httpClientFactory;
+           
+            _productService = productService;
+            _categoryService = categoryService;
         }
 
 
@@ -30,15 +34,11 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Ürünler";
             ViewBag.v3 = "Ürün listesi";
             await GetCategoriesInProducts();
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Products");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+
+            var values = await _productService.GetAllProductAsync();
+
+            return View(values);
+
         }
 
         [Route("ProductListWithCategory")]
@@ -48,22 +48,15 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v1 = "Anasayfa";
             ViewBag.v2 = "Ürünler";
             ViewBag.v3 = "Ürün listesi";
-            await GetCategoriesInProducts();
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Products/ProductListWithCategory");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+
+            var values = await _productService.GetProductsWithCategoryAsync();
+            return View(values);
         }
 
 
         [Route("CreateProduct")]
         [HttpGet]
-        public async Task<IActionResult>  CreateProduct()
+        public async Task<IActionResult> CreateProduct()
         {
             ViewBag.v0 = "Ürün İşlemleri";
             ViewBag.v1 = "Anasayfa";
@@ -79,30 +72,17 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7070/api/Products", stringContent);
-            await GetCategoriesInProducts();
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Product", new { area = "Admin" });
-            }
-
-            return View();
+            await _productService.CreateProductAsync(dto);
+            return RedirectToAction("Index", "Product", new { area = "Admin" });
         }
 
 
         [Route("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync("https://localhost:7070/api/Products?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Product", new { area = "Admin" });
-            }
-            return View();
+            await _productService.DeleteProductAsync(id);
+            return RedirectToAction("Index", "Product", new { area = "Admin" });
+
         }
 
 
@@ -117,15 +97,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
 
             await GetCategoriesInProducts();
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Products/" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateProductDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _productService.GetByIdProductAsync(id);
+            return View(values);
         }
 
 
@@ -133,16 +106,9 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("UpdateProduct/{id}")]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7070/api/Products/", stringContent);
-            await GetCategoriesInProducts();
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Product", new { area = "Admin" });
-            }
-            return View();
+            await _productService.UpdateProductAsync(dto);
+            return RedirectToAction("Index", "Product", new { area = "Admin" });
+            
         }
 
 
@@ -150,10 +116,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
 
         private async Task GetCategoriesInProducts()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+            var values = await _categoryService.GetAllCategoryAsync();
+
             List<SelectListItem> categoryValues = (from x in values
                                                    select new SelectListItem
                                                    {

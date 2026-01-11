@@ -4,39 +4,33 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.DailySpecialOfferDto;
+using Udemy.WebUI.Services.CatalogServices.DailySpecialOfferService;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/DailySpecialOffer")]
     public class DailySpecialOfferController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IDailySpecialOfferService _dailySpecialOffer;
 
-        public DailySpecialOfferController(IHttpClientFactory httpClientFactory)
+        public DailySpecialOfferController(IHttpClientFactory httpClientFactory, IDailySpecialOfferService dailySpecialOffer)
         {
             _httpClientFactory = httpClientFactory;
+            _dailySpecialOffer = dailySpecialOffer;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "Günlük İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Kategori listesi";
+            ViewBag.v2 = "Günlük indirimler";
+            ViewBag.v3 = "Günlük indirimler listesi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/DailySpecialOffer");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultDailySpecialOfferDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _dailySpecialOffer.GetAllDailySpecialOfferAsync();
+            return View(values);
         }
 
 
@@ -44,62 +38,39 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult CreateDailySpecialOffer()
         {
-
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "Günlük İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Yeni Kategori Girişi";
+            ViewBag.v2 = "Günlük indirimler";
+            ViewBag.v3 = "Yeni Günlük indirimler Girişi";
             return View();
-
         }
 
         [Route("CreateDailySpecialOffer")]
         [HttpPost]
         public async Task<IActionResult> CreateDailySpecialOffer(CreateDailySpecialOfferDto createDailySpecialOfferDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createDailySpecialOfferDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7070/api/DailySpecialOffer", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
-            }
-
-            return View();
+            await _dailySpecialOffer.CreateDailySpecialOfferAsync(createDailySpecialOfferDto);
+            return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
         }
 
         [Route("DeleteDailySpecialOffer/{id}")]
         public async Task<IActionResult> DeleteDailySpecialOffer(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync("https://localhost:7070/api/DailySpecialOffer?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
-            }
-            return View();
+            await _dailySpecialOffer.DeleteDailySpecialOfferAsync(id);
+            return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
         }
 
         [HttpGet]
         [Route("UpdateDailySpecialOffer/{id}")]
         public async Task<IActionResult> UpdateDailySpecialOffer(string id)
         {
-
-            ViewBag.v0 = "Kategori işlemleri";
+            ViewBag.v0 = "Günlük İndirim işlemleri";
             ViewBag.v1 = "Anasayfa";
-            ViewBag.v2 = "Kategoriler";
-            ViewBag.v3 = "Kategori Güncelle";
+            ViewBag.v2 = "Günlük indirimler";
+            ViewBag.v3 = "Günlük indirimler Silme işlemi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/DailySpecialOffer/" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateDailySpecialOfferDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _dailySpecialOffer.GetByIdDailySpecialOfferAsync(id);
+            return View(values);
         }
 
 
@@ -107,15 +78,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("UpdateDailySpecialOffer/{id}")]
         public async Task<IActionResult> UpdateDailySpecialOffer(UpdateDailySpecialOfferDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7070/api/DailySpecialOffer/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
-            }
-            return View();
+            await _dailySpecialOffer.UpdateDailySpecialOfferAsync(dto);
+            return RedirectToAction("Index", "DailySpecialOffer", new { area = "Admin" });
         }
     }
 }
