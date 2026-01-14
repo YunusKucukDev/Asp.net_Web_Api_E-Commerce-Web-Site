@@ -3,24 +3,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 using Udemy.DtoLayer.CatalogDtos.ProductDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
+using Udemy.WebUI.Services.CatalogServices.ProductServices;
 
 namespace Udemy.WebUI.ViewComponents.ProductDetailViewComponents
 {
     public class _ProductDetailFeatureComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICategoryService _categoryservice;
+        private readonly IProductService _productService;
 
-        public _ProductDetailFeatureComponentPartial(IHttpClientFactory httpClientFactory)
+        public _ProductDetailFeatureComponentPartial(IProductService productService, ICategoryService categoryservice)
         {
-            _httpClientFactory = httpClientFactory;
+            _productService = productService;
+            _categoryservice = categoryservice;
         }
 
         private async Task GetCategoriesInProducts()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+
+            var values = await _categoryservice.GetAllCategoryAsync();
             List<SelectListItem> categoryValues = (from x in values
                                                    select new SelectListItem
                                                    {
@@ -36,15 +38,8 @@ namespace Udemy.WebUI.ViewComponents.ProductDetailViewComponents
         {
             await GetCategoriesInProducts();
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Products/" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateProductDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _productService.GetByIdProductAsync(id);
+            return View(values);
         }
     }
 }

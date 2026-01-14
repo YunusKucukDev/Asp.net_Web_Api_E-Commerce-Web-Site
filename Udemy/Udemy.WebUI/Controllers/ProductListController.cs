@@ -2,17 +2,21 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using Udemy.Catalog.Services.ContactServices;
 using Udemy.DtoLayer.CommnetDtos;
+using Udemy.WebUI.Services.CommentServices;
 
 namespace Udemy.WebUI.Controllers
 {
     public class ProductListController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICommentService _commentService;
 
-        public ProductListController(IHttpClientFactory httpClientFactory)
+        public ProductListController(IHttpClientFactory httpClientFactory, ICommentService commentService)
         {
             _httpClientFactory = httpClientFactory;
+            _commentService = commentService;
         }
         public IActionResult Index(string id)
         {
@@ -23,15 +27,10 @@ namespace Udemy.WebUI.Controllers
         public async Task<IActionResult> ProductDetail(string id)
         {
             ViewBag.x = id;
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7028/api/Comments/CommentListByProductId?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<DtoLayer.CommnetDtos.ResultCommentDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            
+
+            var values = await _commentService.CommentListByProductId(id);
+            return View(values); ;
 
         }
         [HttpGet]
@@ -48,20 +47,14 @@ namespace Udemy.WebUI.Controllers
             dto.CreatedDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             dto.Status = false;
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7028/api/Comments", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction(
-                        "ProductDetail",
-                        "ProductList",
-                        new { id = dto.ProductId }
-                );
-            }
+            
 
-            return View();
+            await _commentService.GetAllCommentAsync();
+            return RedirectToAction(
+                         "ProductDetail",
+                         "ProductList",
+                         new { id = dto.ProductId }
+                 );
         }
     }
 }

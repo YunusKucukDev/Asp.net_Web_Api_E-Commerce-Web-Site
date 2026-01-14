@@ -45,7 +45,8 @@ namespace Udemy.IdentityServer
             new ApiScope("PaymentFullPermission","Full authority for Payment operations"),
             new ApiScope("ImagesFullPermission","Full authority for Images operations"),
             new ApiScope("OcelotFullPermission","Full authority for ocelot operations"),
-            new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
+            new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
+            new ApiScope(IdentityServerConstants.StandardScopes.OfflineAccess)
         };
 
         public static IEnumerable<Client> Clients => new Client[]
@@ -57,40 +58,71 @@ namespace Udemy.IdentityServer
                 ClientName ="Udemy Visitor User",
                 AllowedGrantTypes = GrantTypes.ClientCredentials, // Neye izin verdiğiyle ilgili property
                 ClientSecrets ={new Secret("udemySecret".Sha256())},
-                AllowedScopes = {"CatalogFullPermission","OcelotFullPermission","CommentFullPermission", "ImagesFullPermission" } //Kapsamlar
+                AllowedScopes = {"CatalogFullPermission","OcelotFullPermission","CommentFullPermission", "ImagesFullPermission",} //Kapsamlar
             },
 
             //Manager
-            new Client
+           new Client
             {
-                ClientId ="UdemyManagerId",
-                ClientName="Udemy Manager User",
-                AllowedGrantTypes =GrantTypes.ResourceOwnerPassword,
-                ClientSecrets = {new Secret("udemySecret".Sha256())},
-                AllowedScopes ={ "ImagesFullPermission", "CatalogReadPermission" , "CatalogFullPermission", "BasketFullPermission", "OcelotFullPermission", "CommentFullPermission", "PaymentFullPermission",
-                 IdentityServerConstants.LocalApi.ScopeName,
-                 IdentityServerConstants.StandardScopes.Email,
-                 IdentityServerConstants.StandardScopes.OpenId,
-                 IdentityServerConstants.StandardScopes.Profile, }
+                ClientId = "UdemyManagerId",
+                ClientName = "Udemy Manager User",
 
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                ClientSecrets = { new Secret("udemySecret".Sha256()) },
+
+                AllowedScopes =
+                {
+                    "ImagesFullPermission",
+                    "CatalogReadPermission",
+                    "CatalogFullPermission",
+                    "BasketFullPermission",
+                    "DiscountFullPermission",
+                    "OcelotFullPermission",
+                    "CommentFullPermission",
+                    "PaymentFullPermission",
+
+                    IdentityServerConstants.LocalApi.ScopeName,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.Email,
+                    IdentityServerConstants.StandardScopes.OfflineAccess
+                },
+
+                AllowOfflineAccess = true
             },
 
-            //Admin
-             new Client
+            new Client
             {
-                ClientId ="UdemyAdminId",
-                ClientName="Udemy Admin User",
-                AllowedGrantTypes =GrantTypes.ResourceOwnerPassword,
-                ClientSecrets = {new Secret("udemySecret".Sha256())},
-                AllowedScopes ={ "OcelotFullPermission","ImagesFullPermission","PaymentFullPermission","CatalogReadPermission" , "CatalogFullPermission","DiscountFullPermission", "OrderFullPermission","CargoFullPermission","BasketFullPermission","CommentFullPermission",
-                 IdentityServerConstants.LocalApi.ScopeName,
-                 IdentityServerConstants.StandardScopes.Email,
-                 IdentityServerConstants.StandardScopes.OpenId,
-                 IdentityServerConstants.StandardScopes.Profile,
-                 },
-                AccessTokenLifetime =600
+                ClientId = "UdemyAdminId",
+                ClientName = "Udemy Admin User",
 
-            }
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                ClientSecrets = { new Secret("udemySecret".Sha256()) },
+
+                AllowedScopes =
+                {
+                    "OcelotFullPermission",
+                    "ImagesFullPermission",
+                    "PaymentFullPermission",
+                    "CatalogReadPermission",
+                    "CatalogFullPermission",
+                    "DiscountFullPermission",
+                    "OrderFullPermission",
+                    "CargoFullPermission",
+                    "BasketFullPermission",
+                    "CommentFullPermission",
+
+                    IdentityServerConstants.LocalApi.ScopeName,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.Email,
+                    IdentityServerConstants.StandardScopes.OfflineAccess
+                },
+
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime = 600
+                }
+
         };
     }
 }

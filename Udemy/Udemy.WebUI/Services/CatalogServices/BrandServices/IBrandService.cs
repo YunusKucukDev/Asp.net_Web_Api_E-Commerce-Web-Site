@@ -8,6 +8,6 @@ namespace Udemy.WebUI.Services.CatalogServices.BrandServices
         Task CreateBrandAsync(CreateBrandDto createBrandDto);
         Task UpdateBrandAsync(UpdateBrandDto updateBrandDto);
         Task DeleteBrandAsync(string id);
-        Task<GetByIdBrandDto> GetByIdBrandAsync(string id);
+        Task<UpdateBrandDto> GetByIdBrandAsync(string id);
     }
 }

@@ -6,9 +6,9 @@ using Udemy.Comment.Entities;
 
 namespace Udemy.Comment.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class CommentsController : ControllerBase
     {
         private readonly CommentContex _contex;
@@ -58,7 +58,7 @@ namespace Udemy.Comment.Controllers
             return Ok("işlem başarıyla gerçekleşti");
         }
 
-        [HttpGet("CommentListByProductId")]
+        [HttpGet("CommentListByProductId/{id}")]
         public IActionResult CommentListByProductId(string id)
         {
             var values = _contex.UserComments.Where(x => x.ProductId == id).ToList();

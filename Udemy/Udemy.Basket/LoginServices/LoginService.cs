@@ -1,16 +1,16 @@
-﻿namespace Udemy.Basket.LoginServices
+﻿
+using System.Security.Claims;
+
+namespace Udemy.Basket.LoginServices
 {
     public class LoginService : ILoginService
     {
-        private readonly IHttpContextAccessor _contextAccessor;
-
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public LoginService(IHttpContextAccessor contextAccessor)
         {
-            _contextAccessor = contextAccessor;
+            _httpContextAccessor = contextAccessor;
         }
 
-        public string GetUserId => _contextAccessor.HttpContext.User.FindFirst("sub").Value;
-
-        
+        public string GetUserId => _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
     }
 }

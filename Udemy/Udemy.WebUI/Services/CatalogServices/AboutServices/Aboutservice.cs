@@ -31,10 +31,10 @@ namespace Udemy.WebUI.Services.CatalogServices.AboutServices
             return values;
         }
 
-        public async Task<GetByIdAboutDto> GetByIdAboutAsync(string id)
+        public async Task<UpdateAboutDto> GetByIdAboutAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("about/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdAboutDto>();
+            var values = await responseMessage.Content.ReadFromJsonAsync<UpdateAboutDto>();
             return values;
         }
 

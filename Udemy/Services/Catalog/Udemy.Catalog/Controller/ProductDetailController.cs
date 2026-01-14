@@ -33,7 +33,7 @@ namespace Udemy.Catalog.Controller
             return Ok(values);
         }
 
-        [HttpGet("GetByProductidProductDetail")]
+        [HttpGet("GetByProductidProductDetail/{id}")]
         public async Task<IActionResult> GetByProductidProductDetail(string id)
         {
             var values = await _service.GetByProductIdProductDetailAsync(id);

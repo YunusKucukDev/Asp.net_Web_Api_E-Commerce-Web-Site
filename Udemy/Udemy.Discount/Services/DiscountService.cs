@@ -61,6 +61,30 @@ namespace Udemy.Discount.Services
             }
         }
 
+        public async Task<ResutCouponDto> GetCodeDetailByCodeAsync(string code)
+        {
+            string query = "Select * from Coupons Where Code=@code";
+            var parameters = new DynamicParameters();
+            parameters.Add("@code", code);
+            using (var connection = _contex.CreateConnection())
+            {
+                var values = await connection.QueryFirstOrDefaultAsync<ResutCouponDto>(query, parameters);
+                return values;
+            }
+        }
+
+        public int GetDiscountCouponRate(string code)
+        {
+            string query = "Select Rate * from Coupons Where Code=@code";
+            var parameters = new DynamicParameters();
+            parameters.Add("@code", code);
+            using (var connection = _contex.CreateConnection())
+            {
+                var values =  connection.QueryFirstOrDefault<int>(query, parameters);
+                return values;
+            }
+        }
+
         public async Task UpdateCouponAsync(UpdateCouponDto updateCouponDto)
         {
             string query = @"Update Coupons 

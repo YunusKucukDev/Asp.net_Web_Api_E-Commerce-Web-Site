@@ -5,24 +5,27 @@ using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 using Udemy.DtoLayer.CatalogDtos.ProductDtos;
 using Udemy.DtoLayer.CatalogDtos.ProductImagesDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
+using Udemy.WebUI.Services.CatalogServices.ProductImagesServices;
 
 namespace Udemy.WebUI.ViewComponents.ProductDetailViewComponents
 {
     public class _ProductDetailImageSliderComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+       
+        private readonly ICategoryService _categoryService;
+        private readonly IProductImageService _productImageService;
 
-        public _ProductDetailImageSliderComponentPartial(IHttpClientFactory httpClientFactory)
+        public _ProductDetailImageSliderComponentPartial(ICategoryService categoryService, IProductImageService productImageService)
         {
-            _httpClientFactory = httpClientFactory;
+            _categoryService = categoryService;
+            _productImageService = productImageService;
         }
 
         private async Task GetCategoriesInProducts()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+
+            var values = await _categoryService.GetAllCategoryAsync();
             List<SelectListItem> categoryValues = (from x in values
                                                    select new SelectListItem
                                                    {
@@ -38,15 +41,9 @@ namespace Udemy.WebUI.ViewComponents.ProductDetailViewComponents
         {
             await GetCategoriesInProducts();
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/ProductImages/ProductImagesByProductId?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<GetByIdProductsImageDto>(jsonData);
-                return View(values);
-            }
-            return View();
+
+            var values = await _productImageService.GetByProductIdProductsImageDtoAsync(id);
+            return View(values);
         }
     }
 }

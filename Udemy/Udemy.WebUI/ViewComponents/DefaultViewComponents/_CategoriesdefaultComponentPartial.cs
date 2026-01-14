@@ -2,30 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
 
 namespace Udemy.WebUI.ViewComponents.DefaultViewComponents
 {
     public class _CategoriesdefaultComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICategoryService _categoryService;
 
-        public _CategoriesdefaultComponentPartial(IHttpClientFactory httpClientFactory)
+        public _CategoriesdefaultComponentPartial(ICategoryService categoryService)
         {
-            _httpClientFactory = httpClientFactory;
+            _categoryService = categoryService;
         }
 
         [Route("Index")]
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _categoryService.GetAllCategoryAsync();
+            return View(values);
         }
     }
 }

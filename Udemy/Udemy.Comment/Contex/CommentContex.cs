@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Comment.Entities;
 
 namespace Udemy.Comment.Contex
@@ -7,7 +8,10 @@ namespace Udemy.Comment.Contex
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost,1442;Initial Catalog =MultiShopCommantDb;User=sa;Password=A12b13c14.;Encrypt=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(
+    "Server=localhost,1442;Database=MultiShopCommantDb;User Id=sa;Password=A12b13c14.;TrustServerCertificate=True;"
+);
+
         }
         public DbSet<UserComment> UserComments { get; set; }
     }

@@ -1,32 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.OfferDiscountDto;
+using Udemy.WebUI.Services.CatalogServices.OfferDiscountservices;
 
 namespace Udemy.WebUI.ViewComponents.DefaultViewComponents
 {
     public class _OfferDiscountDefaultComponentResult : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOfferDiscountService _offerDiscountService;
 
-        public _OfferDiscountDefaultComponentResult(IHttpClientFactory httpClientFactory)
+        public _OfferDiscountDefaultComponentResult(IOfferDiscountService offerDiscountService)
         {
-            _httpClientFactory = httpClientFactory;
+            _offerDiscountService = offerDiscountService;
         }
 
-       
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/OfferDiscount");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultOfferDiscountDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _offerDiscountService.GetAllOfferDiscountAsync();
+            return View(values); 
         }
     }
 }

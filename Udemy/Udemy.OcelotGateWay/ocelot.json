@@ -72,7 +72,8 @@
           "Port": 7073
         }
       ]
-    }, //Basket Mikroservisi
+    }, 
+    //Basket Mikroservisi
     {
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "UpstreamPathTemplate": "/services/Basket/{everything}",
@@ -107,7 +108,8 @@
           "Port": 7075
         }
       ]
-    }, //Payment Mikroservisi
+    }, 
+    //Payment Mikroservisi
     {
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "UpstreamPathTemplate": "/services/payment/{everything}",

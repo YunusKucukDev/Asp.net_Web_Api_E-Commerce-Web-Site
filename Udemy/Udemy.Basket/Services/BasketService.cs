@@ -13,14 +13,14 @@ namespace Udemy.Basket.Services
             _redisService = redisService;
         }
 
-        public async Task DeleteBasket(string userId)
+        public async Task DeleteBasket(string id)
         {
-           await _redisService.GetDb().KeyDeleteAsync(userId);
+           await _redisService.GetDb().KeyDeleteAsync(id);
         }
 
-        public async Task<BasketTotalDto> GetBasket(string userId)
+        public async Task<BasketTotalDto> GetBasket(string id)
         {
-            var existBasket= await _redisService.GetDb().StringGetAsync(userId);
+            var existBasket= await _redisService.GetDb().StringGetAsync(id);
             return JsonSerializer.Deserialize<BasketTotalDto>(existBasket);
             
         }

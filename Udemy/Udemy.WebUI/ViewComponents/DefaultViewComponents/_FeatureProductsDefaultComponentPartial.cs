@@ -3,39 +3,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
 using Udemy.DtoLayer.CatalogDtos.ProductDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
+using Udemy.WebUI.Services.CatalogServices.ProductServices;
 
 namespace Udemy.WebUI.ViewComponents.DefaultViewComponents
 {
     public class _FeatureProductsDefaultComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public _FeatureProductsDefaultComponentPartial(IHttpClientFactory httpClientFactory)
+        public _FeatureProductsDefaultComponentPartial(IProductService productService, ICategoryService categoryService)
         {
-            _httpClientFactory = httpClientFactory;
+            _productService = productService;
+            _categoryService = categoryService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            await GetCategoriesInProducts();
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Products");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultProductDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            GetCategoriesInProducts();
+            var values = await _productService.GetAllProductAsync();
+            return View(values);
         }
 
 
         private async Task GetCategoriesInProducts()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+            var values = await _categoryService.GetAllCategoryAsync();
             List<SelectListItem> categoryValues = (from x in values
                                                    select new SelectListItem
                                                    {

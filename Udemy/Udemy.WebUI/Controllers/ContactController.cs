@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.ContactDtos;
+using Udemy.WebUI.Services.CatalogServices.ContactServices;
 
 namespace Udemy.WebUI.Controllers
 {
     public class ContactController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IContactService _contactService;
 
-        public ContactController(IHttpClientFactory httpClientFactory)
+        public ContactController(IHttpClientFactory httpClientFactory, IContactService contactService)
         {
             _httpClientFactory = httpClientFactory;
+            _contactService = contactService;
         }
 
         [HttpGet]
@@ -24,16 +28,10 @@ namespace Udemy.WebUI.Controllers
         {
             dto.IsRead = false;
             dto.SendDate = DateTime.Now;
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7070/api/Contacts", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Default");
-            }
+            
 
-            return View();
+            await _contactService.GetAllContactAsync();
+            return RedirectToAction("Index", "Default");
         }
     }
 }

@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CommnetDtos;
+using Udemy.WebUI.Services.CommentServices;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/Comment")]
     public class CommentController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+       private readonly ICommentService _commentService;
 
-        public CommentController(IHttpClientFactory httpClientFactory)
+        public CommentController(ICommentService commentService)
         {
-            _httpClientFactory = httpClientFactory;
+            _commentService = commentService;
         }
 
         [Route("Index")]
@@ -27,16 +27,9 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Yorumlar";
             ViewBag.v3 = "Yorum listesi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7028/api/Comments");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<DtoLayer.CommnetDtos.ResultCommentDto>>(jsonData);
-                return View(values);
-            }
+            var values = await _commentService.GetAllCommentAsync();
 
-            return View();
+            return View(values);
         }
 
 
@@ -45,13 +38,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("DeleteComment/{id}")]
         public async Task<IActionResult> DeleteComment(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync("https://localhost:7028/api/Comments?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Comment", new { area = "Admin" });
-            }
-            return View();
+            await _commentService.DeleteCommentAsync(id);
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
         }
 
         [HttpGet]
@@ -64,15 +52,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Yorumlar";
             ViewBag.v3 = "Yorum listesi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7028/api/Comments/" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateCommentDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _commentService.GetByIdCommentAsync(id);
+            return View(values);
         }
 
 
@@ -81,15 +62,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateComment(UpdateCommentDto dto)
         {
             dto.Status = true;
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7028/api/Comments/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Comment", new { area = "Admin" });
-            }
-            return View();
+            await _commentService.UpdateCommentAsync(dto);
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
         }
     }
 }

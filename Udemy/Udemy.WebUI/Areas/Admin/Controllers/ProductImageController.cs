@@ -3,19 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.ProductImagesDtos;
+using Udemy.WebUI.Services.CatalogServices.ProductImagesServices;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/ProductImage")]
     public class ProductImageController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductImageService _productImageService;
 
-        public ProductImageController(IHttpClientFactory httpClientFactory)
+        public ProductImageController(IProductImageService productImageService)
         {
-            _httpClientFactory = httpClientFactory;
+            _productImageService = productImageService;
         }
 
         [HttpGet]
@@ -28,15 +28,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Ürün Görsel Güncelleme sayfası";
             ViewBag.v3 = "Ürün Görsel İşlemleri";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/ProductImages/ProductImagesByProductId?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateProductsImageDto>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _productImageService.GetByProductIdProductsImageDtoAsync(id);
+            return View(values);
         }
 
 
@@ -44,15 +37,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("ProductImageDetail/{id}")]
         public async Task<IActionResult> ProductImageDetail(UpdateProductsImageDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7070/api/ProductImages", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("ProductListWithCategory", "Product", new { area = "Admin" });
-            }
-            return View();
+            await _productImageService.UpdateProductImageAsync(dto);
+            return RedirectToAction("ProductListWithCategory", "Product", new { area = "Admin" });
         }
 
     }

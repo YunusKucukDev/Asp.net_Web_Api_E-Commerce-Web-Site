@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Udemy.Comment.Contex;
 
 namespace Udemy.Comment
@@ -9,6 +10,12 @@ namespace Udemy.Comment
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.Authority = builder.Configuration["IdentityServerUrl"];
+                opt.RequireHttpsMetadata = false;
+                opt.Audience = "ResourceComment";
+            });
 
             builder.Services.AddDbContext<CommentContex>();
             builder.Services.AddControllers();
@@ -27,6 +34,7 @@ namespace Udemy.Comment
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

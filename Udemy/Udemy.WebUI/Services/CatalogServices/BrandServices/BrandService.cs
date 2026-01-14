@@ -1,4 +1,6 @@
-﻿using Udemy.DtoLayer.CatalogDtos.BrandDto;
+﻿
+
+using Udemy.DtoLayer.CatalogDtos.BrandDto;
 
 namespace Udemy.WebUI.Services.CatalogServices.BrandServices
 {
@@ -30,10 +32,10 @@ namespace Udemy.WebUI.Services.CatalogServices.BrandServices
             return values;
         }
 
-        public async Task<GetByIdBrandDto> GetByIdBrandAsync(string id)
+        public async Task<UpdateBrandDto> GetByIdBrandAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("brands/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdBrandDto>();
+            var values = await responseMessage.Content.ReadFromJsonAsync<UpdateBrandDto>();
             return values;
         }
 

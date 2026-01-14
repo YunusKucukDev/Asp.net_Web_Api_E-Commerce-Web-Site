@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.Basket.Dtos;
 using Udemy.Basket.LoginServices;
@@ -6,6 +7,7 @@ using Udemy.Basket.Services;
 
 namespace Udemy.Basket.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class BasketsController : ControllerBase
@@ -23,6 +25,7 @@ namespace Udemy.Basket.Controllers
         public async Task<IActionResult> GetBasketDetail()
         {
             var user = User.Claims;
+            var claims = User.Claims.Select(x => new { x.Type, x.Value }).ToList();
             var values = await _basketService.GetBasket(_loginService.GetUserId);
             return Ok(values);
         }

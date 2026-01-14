@@ -41,15 +41,15 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
 
         }
 
-        [Route("ProductListWithCategory")]
-        public async Task<IActionResult> ProductListWithCategory()
+        [Route("ProductListWithCategory/{id}")]
+        public async Task<IActionResult> ProductListWithCategory(string id)
         {
             ViewBag.v0 = "Ürün İşlemleri";
             ViewBag.v1 = "Anasayfa";
             ViewBag.v2 = "Ürünler";
             ViewBag.v3 = "Ürün listesi";
 
-            var values = await _productService.GetProductsWithCategoryAsync();
+            var values = await _productService.GetProductsWithCategoryByCategoryIdAsync(id);
             return View(values);
         }
 

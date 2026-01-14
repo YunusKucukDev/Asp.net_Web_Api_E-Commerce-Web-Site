@@ -1,31 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.GeneralSpecialOfferDto;
+using Udemy.WebUI.Services.CatalogServices.GeneralSpecialOfferServices;
 
 namespace Udemy.WebUI.ViewComponents.DefaultViewComponents
 {
     public class _GeneralSpecialOfferComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IGeneralSpecialOfferService _generalSpecialOffer;
 
-        public _GeneralSpecialOfferComponentPartial(IHttpClientFactory httpClientFactory)
+        public _GeneralSpecialOfferComponentPartial(IGeneralSpecialOfferService generalSpecialOffer)
         {
-            _httpClientFactory = httpClientFactory;
+            _generalSpecialOffer = generalSpecialOffer;
         }
 
-        [Route("Index")]
+        
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/GeneralSpecialOffer");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultGeneralSpecialOfferDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _generalSpecialOffer.GetAllGeneralSpecialOfferAsync();
+            return View(values);
         }
     }
 }

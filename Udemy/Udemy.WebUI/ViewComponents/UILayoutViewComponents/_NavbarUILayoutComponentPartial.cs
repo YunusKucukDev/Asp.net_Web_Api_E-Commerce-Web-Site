@@ -2,58 +2,24 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Udemy.DtoLayer.CatalogDtos.CategoryDtos;
+using Udemy.WebUI.Services.CatalogServices.CategoryServices;
+using static MongoDB.Driver.WriteConcern;
 
 namespace Udemy.WebUI.ViewComponents.UILayoutViewComponents
 {
     public class _NavbarUILayoutComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICategoryService _categoryservice;
 
-        public _NavbarUILayoutComponentPartial(IHttpClientFactory httpClientFactory)
+        public _NavbarUILayoutComponentPartial(ICategoryService categoryservice)
         {
-            _httpClientFactory = httpClientFactory;
+            _categoryservice = categoryservice;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            string token = "";
-            using (var httpClient = new HttpClient())
-            {
-                var request = new HttpRequestMessage
-                {
-                    RequestUri = new Uri("https://localhost:5001/connect/token"),
-                    Method = HttpMethod.Post,
-                    Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                    {
-                        {"client_id","UdemyVisitorId"},
-                        {"client_secret","udemySecret"},
-                        {"grant_type","client_credentials"}
-                    })
-                };
-                using (var response = await httpClient.SendAsync(request))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var content = await response.Content.ReadAsStringAsync();
-                        var tokenResponse = JObject.Parse(content);
-                        token = tokenResponse["access_token"].ToString();
-                    }
-                }
-            }
-
-
-
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _categoryservice.GetAllCategoryAsync();
+            return View(values);
         }
     }
 }

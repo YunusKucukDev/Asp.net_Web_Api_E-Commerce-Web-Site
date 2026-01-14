@@ -3,19 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Udemy.DtoLayer.CatalogDtos.ProductDetailDtos;
+using Udemy.WebUI.Services.CatalogServices.ProductDetailServices;
 
 namespace Udemy.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AllowAnonymous]
     [Route("Admin/ProductDetail")]
     public class ProductDetailController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductDetailService _productdetailService;
 
-        public ProductDetailController(IHttpClientFactory httpClientFactory)
+        public ProductDetailController(IProductDetailService productdetailService)
         {
-            _httpClientFactory = httpClientFactory;
+            _productdetailService = productdetailService;
         }
 
         [HttpGet]
@@ -28,15 +28,9 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Ürün açıklama Güncelleme sayfası";
             ViewBag.v3 = "Ürün açıklama İşlemleri";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/ProductDetail/GetByProductidProductDetail?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateProductDetailDto>(jsonData);
-                return View(values);
-            }
-            return View();
+
+            var values = await _productdetailService.GetByProductIdProductDetailAsync(id);
+            return View(values);
         }
 
 
@@ -44,15 +38,8 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
         [Route("UpdateProductDetail/{id}")]
         public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7070/api/ProductDetail/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("ProductListWithCategory", "Product", new { area = "Admin" });
-            }
-            return View();
+            await _productdetailService.updateProductDetailAsync(dto);
+            return RedirectToAction("ProductListWithCategory", "Product", new { area = "Admin" });
         }
 
     }

@@ -1,33 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Udemy.DtoLayer.CatalogDtos.BrandDto;
+using Udemy.WebUI.Services.CatalogServices.BrandServices;
 
 
 namespace Udemy.WebUI.ViewComponents.DefaultViewComponents
 {
     public class _VendordefaultComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IBrandService _brandService;
 
-        public _VendordefaultComponentPartial(IHttpClientFactory httpClientFactory)
+        public _VendordefaultComponentPartial(IBrandService brandService)
         {
-            _httpClientFactory = httpClientFactory;
+            _brandService = brandService;
         }
 
-        
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Brands");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultBrandDto>>(jsonData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _brandService.GetAllBrandAsync();
+            return View(values);
         }
     }
 }

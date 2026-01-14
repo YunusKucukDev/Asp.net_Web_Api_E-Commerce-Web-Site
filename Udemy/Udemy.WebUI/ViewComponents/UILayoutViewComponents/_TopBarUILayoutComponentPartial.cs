@@ -2,30 +2,23 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using Udemy.DtoLayer.CatalogDtos;
+using Udemy.WebUI.Services.CatalogServices.AboutServices;
 
 namespace Udemy.WebUI.ViewComponents.UILayoutViewComponents
 {
     public class _TopBarUILayoutComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IAboutService _aboutService;
 
-        public _TopBarUILayoutComponentPartial(IHttpClientFactory httpClientFactory)
+        public _TopBarUILayoutComponentPartial(IAboutService aboutService)
         {
-            _httpClientFactory = httpClientFactory;
+            _aboutService = aboutService;
         }
 
-       
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/About");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultAboutDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _aboutService.GetAllAboutAsync();
+            return View(values);
         }
     }
 }

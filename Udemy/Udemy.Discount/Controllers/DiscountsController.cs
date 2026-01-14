@@ -33,6 +33,20 @@ namespace Udemy.Discount.Controllers
             return Ok(values);
         }
 
+        [HttpGet("GetCodeDetailByCodeAsync")]
+        public async Task<IActionResult> GetCodeDetailByCodeAsync(string code)
+        {
+            var values = await _service.GetCodeDetailByCodeAsync(code);
+            return Ok(values);
+        }
+
+        [HttpGet("GetDiscountCouponRate")]
+        public  IActionResult GetDiscountCouponRate(string code)
+        {
+            var values =  _service.GetDiscountCouponRate(code);
+            return Ok(values);
+        }
+
         [HttpPost]
         public async Task<IActionResult> DiscountCreateCoupon(CreateCoupunDto coupon)
         {
@@ -54,5 +68,5 @@ namespace Udemy.Discount.Controllers
             return Ok("Kupon Başarıyla Güncellendi");
 
         }
-    }
+    }//public int GetDiscountCouponRate(string code)
 }

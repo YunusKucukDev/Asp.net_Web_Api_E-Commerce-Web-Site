@@ -30,51 +30,59 @@ namespace Udemy.WebUI.Services.Concrete
 
         public async Task<bool> GetRefreshToken()
         {
-            var discoveryEndPoint = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
-            {
-                Address = _serviceApiSettings.IdentityServerUrl
+            var discovery = await _httpClient.GetDiscoveryDocumentAsync(
+                _serviceApiSettings.IdentityServerUrl);
 
-            });
+            if (discovery.IsError)
+                throw new Exception(discovery.Error);
 
+            var httpContext = _httpContexAccessor.HttpContext;
 
+            var refreshToken = await httpContext
+                .GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
 
-            var refreshToken = await _httpContexAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+            if (string.IsNullOrEmpty(refreshToken))
+                return false;
 
-            RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest
-            {
-                ClientId = _clientSettings.UdemyManagerClient.ClientId,
-                ClientSecret = _clientSettings.UdemyManagerClient.ClientSecret,
-                RefreshToken = refreshToken,
-                Address = discoveryEndPoint.TokenEndpoint
-            };
-            var token = await _httpClient.RequestRefreshTokenAsync(refreshTokenRequest);
-
-            var authenticationToken = new List<AuthenticationToken>()
-            {
-                new AuthenticationToken
+            var tokenResponse = await _httpClient.RequestRefreshTokenAsync(
+                new RefreshTokenRequest
                 {
-                    Name = OpenIdConnectParameterNames.AccessToken,
-                    Value = token.AccessToken
-                },
-                new AuthenticationToken
-                {
-                    Name = OpenIdConnectParameterNames.RefreshToken,
-                    Value = token.RefreshToken
-                },
-                new AuthenticationToken
-                {
-                    Name = OpenIdConnectParameterNames.ExpiresIn,
-                    Value = DateTime.Now.AddSeconds(token.ExpiresIn).ToString()
-                }
+                    ClientId = _clientSettings.UdemyManagerClient.ClientId,
+                    ClientSecret = _clientSettings.UdemyManagerClient.ClientSecret,
+                    RefreshToken = refreshToken,
+                    Address = discovery.TokenEndpoint
+                });
 
-            };
-            var result = await _httpContexAccessor.HttpContext.AuthenticateAsync();
-            var properties = result.Properties;
-            properties.StoreTokens(authenticationToken);
-            await _httpContexAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, properties);
+            if (tokenResponse.IsError)
+                throw new Exception(tokenResponse.Error);
+
+            var authResult = await httpContext.AuthenticateAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var tokens = new List<AuthenticationToken>
+    {
+        new AuthenticationToken
+        {
+            Name = OpenIdConnectParameterNames.AccessToken,
+            Value = tokenResponse.AccessToken
+        },
+        new AuthenticationToken
+        {
+            Name = OpenIdConnectParameterNames.RefreshToken,
+            Value = tokenResponse.RefreshToken
+        }
+    };
+
+            authResult.Properties.StoreTokens(tokens);
+
+            await httpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                authResult.Principal,
+                authResult.Properties);
 
             return true;
         }
+
 
         public async Task<bool> SignIn(SignInDto dto)
         {

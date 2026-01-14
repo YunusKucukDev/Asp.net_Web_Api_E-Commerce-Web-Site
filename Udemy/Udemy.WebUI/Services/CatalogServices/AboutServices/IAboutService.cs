@@ -9,6 +9,6 @@ namespace Udemy.WebUI.Services.CatalogServices.AboutServices
         Task CreateAboutAsync(CreateAboutDto createAboutDto);
         Task UpdateAboutAsync(UpdateAboutDto updateAboutDto);
         Task DeleteAboutAsync(string id);
-        Task<GetByIdAboutDto> GetByIdAboutAsync(string id);
+        Task<UpdateAboutDto> GetByIdAboutAsync(string id);
     }
 }

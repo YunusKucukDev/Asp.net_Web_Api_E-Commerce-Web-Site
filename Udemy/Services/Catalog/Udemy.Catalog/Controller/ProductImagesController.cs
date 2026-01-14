@@ -21,14 +21,14 @@ namespace Udemy.Catalog.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> CategoryList()
+        public async Task<IActionResult> ProductImagesList()
         {
             var values = await _service.GetAllProductImagesAsync();
             return Ok(values);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByidCategory(string id)
+        public async Task<IActionResult> GetByidProductImages(string id)
         {
             var values = await _service.GetByIdProductsImageDtoAsync(id);
             return Ok(values);
@@ -57,7 +57,7 @@ namespace Udemy.Catalog.Controller
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCategory(UpdateProductsImageDto updateProductsImageDto)
+        public async Task<IActionResult> UpdateProductImages(UpdateProductsImageDto updateProductsImageDto)
         {
             await _service.UpdateProductImageAsync(updateProductsImageDto);
             return Ok("Product Image Güncellendi");

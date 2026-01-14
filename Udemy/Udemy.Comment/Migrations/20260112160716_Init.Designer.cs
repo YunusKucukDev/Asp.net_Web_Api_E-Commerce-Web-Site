@@ -12,7 +12,7 @@ using Udemy.Comment.Contex;
 namespace Udemy.Comment.Migrations
 {
     [DbContext(typeof(CommentContex))]
-    [Migration("20260105123210_Init")]
+    [Migration("20260112160716_Init")]
     partial class Init
     {
         /// <inheritdoc />
