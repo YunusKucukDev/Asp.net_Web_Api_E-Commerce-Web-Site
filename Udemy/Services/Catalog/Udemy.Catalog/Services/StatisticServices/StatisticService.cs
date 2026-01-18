@@ -25,9 +25,9 @@ namespace Udemy.Catalog.Services.StatisticServices
             return await _brandCollection.CountDocumentsAsync(FilterDefinition<Brand>.Empty);
         }
 
-        public Task<long> GetCategoryCount()
+        public async Task<long> GetCategoryCount()
         {
-            return _categoryCollection.CountDocumentsAsync(FilterDefinition<Category>.Empty);
+            return await _categoryCollection.CountDocumentsAsync(FilterDefinition<Category>.Empty);
         }
 
         public async Task<string> GetMaxPriceProductName()
@@ -71,9 +71,9 @@ namespace Udemy.Catalog.Services.StatisticServices
             return price;
         }
 
-        public Task<long> GetProductCount()
+        public async Task<long> GetProductCount()
         {
-            return _productCollection.CountDocumentsAsync(FilterDefinition<Product>.Empty);
+            return await _productCollection.CountDocumentsAsync(FilterDefinition<Product>.Empty);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Udemy.Comment.Contex;
 using Udemy.Comment.Entities;
 
@@ -11,80 +11,83 @@ namespace Udemy.Comment.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly CommentContex _contex;
+        private readonly CommentContex _context;
 
-        public CommentsController(CommentContex contex)
+        public CommentsController(CommentContex context)
         {
-            _contex = contex;
+            _context = context;
         }
 
         [HttpGet]
-        public IActionResult CommentList()
+        public async Task<IActionResult> CommentList()
         {
-            var values = _contex.UserComments.ToList();
+            var values = await _context.UserComments.ToListAsync();
             return Ok(values);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetComment(int id)
+        public async Task<IActionResult> GetComment(int id)
         {
-            var values = _contex.UserComments.Find(id);
-            return Ok(values);
+            var value = await _context.UserComments.FindAsync(id);
+            return Ok(value);
         }
 
         [HttpPost]
-        public IActionResult CreateComment(UserComment userComment)
+        public async Task<IActionResult> CreateComment(UserComment userComment)
         {
-            _contex.UserComments.Add(userComment);
-            _contex.SaveChanges();
-            return Ok("işlem baaşrıyla gerçekleşti");
-
-        }
-
-        [HttpPut]
-        public IActionResult UpdateComment(UserComment userComment)
-        {
-            _contex.UserComments.Update(userComment);
-            _contex.SaveChanges();
+            await _context.UserComments.AddAsync(userComment);
+            await _context.SaveChangesAsync();
             return Ok("işlem başarıyla gerçekleşti");
         }
 
-        [HttpDelete]
-        public IActionResult DeleteComment(int id)
+        [HttpPut]
+        public async Task<IActionResult> UpdateComment(UserComment userComment)
         {
-            var values = _contex.UserComments.Find(id);
-            _contex.UserComments.Remove(values);
-            _contex.SaveChanges();
+            _context.UserComments.Update(userComment);
+            await _context.SaveChangesAsync();
+            return Ok("işlem başarıyla gerçekleşti");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var value = await _context.UserComments.FindAsync(id);
+            if (value == null)
+                return NotFound();
+
+            _context.UserComments.Remove(value);
+            await _context.SaveChangesAsync();
             return Ok("işlem başarıyla gerçekleşti");
         }
 
         [HttpGet("CommentListByProductId/{id}")]
-        public IActionResult CommentListByProductId(string id)
+        public async Task<IActionResult> CommentListByProductId(string id)
         {
-            var values = _contex.UserComments.Where(x => x.ProductId == id).ToList();
+            var values = await _context.UserComments
+                                       .Where(x => x.ProductId == id)
+                                       .ToListAsync();
             return Ok(values);
         }
 
         [HttpGet("ActiveCommentCount")]
-        public IActionResult ActiveCommentCount()
+        public async Task<IActionResult> ActiveCommentCount()
         {
-            int value = _contex.UserComments.Where(x => x.Status == true).Count();
+            var value = await _context.UserComments.CountAsync(x => x.Status == true);
             return Ok(value);
         }
 
         [HttpGet("PasiveCommentCount")]
-        public IActionResult PasiveCommentCount()
+        public async Task<IActionResult> PasiveCommentCount()
         {
-            int value = _contex.UserComments.Where(x => x.Status == false).Count();
+            var value = await _context.UserComments.CountAsync(x => x.Status == false);
             return Ok(value);
         }
 
         [HttpGet("TotalCommentCount")]
-        public IActionResult TotalCommentCount()
+        public async Task<IActionResult> TotalCommentCount()
         {
-            int value = _contex.UserComments.Count();
+            var value = await _context.UserComments.CountAsync();
             return Ok(value);
         }
-
     }
 }

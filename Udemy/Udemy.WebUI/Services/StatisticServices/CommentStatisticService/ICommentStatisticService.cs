@@ -2,8 +2,8 @@
 {
     public interface ICommentStatisticService
     {
-        Task<int> GetTotalCommentCount();
-        Task<int> GetActiveCommentCount();
-        Task<int> GetPasiveCommentCount();
+        Task<int> TotalCommentCount();
+        Task<int> ActiveCommentCount();
+        Task<int> PasiveCommentCount();
      }
 }

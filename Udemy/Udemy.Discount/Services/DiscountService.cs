@@ -75,11 +75,11 @@ namespace Udemy.Discount.Services
 
         public async Task<int> GetDiscountCouponCount()
         {
-            string query = "Select Count * From Coupons ";
+            string query = "SELECT COUNT(*) FROM Coupons";
             using (var connection = _contex.CreateConnection())
             {
-                var values = await connection.QueryFirstOrDefaultAsync<int>(query);
-                return values;
+                var value = await connection.QuerySingleAsync<int>(query);
+                return value;
             }
         }
 

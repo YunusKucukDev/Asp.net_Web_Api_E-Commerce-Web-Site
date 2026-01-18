@@ -13,23 +13,23 @@ namespace Udemy.WebUI.Services.StatisticServices.CommentStatisticService
             _httpClient = httpClient;
         }
 
-        public async Task<int> GetActiveCommentCount()
+        public async Task<int> ActiveCommentCount()
         {
-            var responseMessage = await _httpClient.GetAsync("comments/GetActiveCommentCount");
+            var responseMessage = await _httpClient.GetAsync("comments/ActiveCommentCount");
             var values = await responseMessage.Content.ReadFromJsonAsync<int>();
             return values;
         }
 
-        public async Task<int> GetPasiveCommentCount()
+        public async Task<int> PasiveCommentCount()
         {
-            var responseMessage = await _httpClient.GetAsync("comments/GetPasiveCommentCount");
+            var responseMessage = await _httpClient.GetAsync("comments/PasiveCommentCount");
             var values = await responseMessage.Content.ReadFromJsonAsync<int>();
             return values;
         }
 
-        public async Task<int> GetTotalCommentCount()
+        public async Task<int> TotalCommentCount()
         {
-            var responseMessage = await _httpClient.GetAsync("comments/GetTotalCommentCount");
+            var responseMessage = await _httpClient.GetAsync("comments/TotalCommentCount");
             var values = await responseMessage.Content.ReadFromJsonAsync<int>();
             return values;
         }

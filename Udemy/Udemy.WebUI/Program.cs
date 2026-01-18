@@ -25,6 +25,7 @@ using Udemy.WebUI.Services.MessageServices;
 using Udemy.WebUI.Services.OrderServices.OrderAddressServices;
 using Udemy.WebUI.Services.OrderServices.OrderOrderingServices;
 using Udemy.WebUI.Services.StatisticServices.CatalogStatisticServices;
+using Udemy.WebUI.Services.StatisticServices.CommentStatisticService;
 using Udemy.WebUI.Services.StatisticServices.DiscountstatisticService;
 using Udemy.WebUI.Services.StatisticServices.MessageStatisticService;
 using Udemy.WebUI.Services.StatisticServices.UserStatisticService;
@@ -79,7 +80,7 @@ namespace Udemy.WebUI
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Basket.Path}/");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
-            builder.Services.AddHttpClient<IUserStatisticService, IUserStatisticService>(opt =>
+            builder.Services.AddHttpClient<IUserStatisticService, UserStatisticService>(opt =>
             {
                 opt.BaseAddress = new Uri(values.IdentityServerUrl);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
@@ -87,6 +88,11 @@ namespace Udemy.WebUI
             builder.Services.AddHttpClient<ICatalogStatisticService, CatalogStatisticService>(opt =>
             {
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<ICommentStatisticService, CommentStatisticService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Comment.Path}/");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             builder.Services.AddHttpClient<IMessageStatisticService, MessageStatisticService>(opt =>

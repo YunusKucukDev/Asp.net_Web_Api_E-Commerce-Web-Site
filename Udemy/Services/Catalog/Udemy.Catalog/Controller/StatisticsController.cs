@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Udemy.Catalog.Services.StatisticServices;
 
 namespace Udemy.Catalog.Controller
@@ -17,24 +18,24 @@ namespace Udemy.Catalog.Controller
         }
 
         [HttpGet("GetBrandCount")]
-        public IActionResult GetBrandCount()
+        public async Task<IActionResult> GetBrandCount()
         {
-            var values = _statisticServices.GetBrandCount();
+            var values = await _statisticServices.GetBrandCount();
             return Ok(values);
         }
 
         [HttpGet("GetCategoryCount")]
-        public IActionResult GetCategoryCount()
+        public async Task<IActionResult> GetCategoryCount()
         {
-            var values = _statisticServices.GetCategoryCount();
+            var values = await _statisticServices.GetCategoryCount();
             return Ok(values);
         }
 
 
         [HttpGet("GetProductCount")]
-        public IActionResult GetProductCount()
+        public async Task<IActionResult> GetProductCount()
         {
-            var values = _statisticServices.GetProductCount();
+            var values = await _statisticServices.GetProductCount();
             return Ok(values);
         }
 

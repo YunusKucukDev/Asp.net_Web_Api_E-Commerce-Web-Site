@@ -43,9 +43,9 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             var getMinPriceProductName = await _CatalogStatisticService.GetMinPriceProductName();
             //var getProductAvgPrice = await _service.GetProductAvgPrice()
             var getUserCount = await _userStatisticsService.GetUserCount();
-            var getTotalCommentCount = await _commentStatiscticService.GetTotalCommentCount();
-            var GetActiveCommentCount = await _commentStatiscticService.GetActiveCommentCount();
-            var GetPasiveCommentCount = await _commentStatiscticService.GetPasiveCommentCount();
+            var TotalCommentCount = await _commentStatiscticService.TotalCommentCount();
+            var ActiveCommentCount = await _commentStatiscticService.ActiveCommentCount();
+            var PasiveCommentCount = await _commentStatiscticService.PasiveCommentCount();
             var GetDiscountCouponCount = await _discountstatisticService.GetDiscountCouponCount();
             var GetTotalMessageCount = await _messageStatisticService.GetTotalMessageCount();
 
@@ -58,9 +58,9 @@ namespace Udemy.WebUI.Areas.Admin.Controllers
             ViewBag.getMinPriceProductName = getMinPriceProductName;
             //ViewBag.getProductAvgPrice = getProductAvgPrice;
             ViewBag.getUserCount = getUserCount;
-            ViewBag.getTotalCommentCount = getTotalCommentCount;
-            ViewBag.GetActiveCommentCount = GetActiveCommentCount;
-            ViewBag.GetPasiveCommentCount = GetPasiveCommentCount;
+            ViewBag.getTotalCommentCount = TotalCommentCount;
+            ViewBag.GetActiveCommentCount = ActiveCommentCount;
+            ViewBag.GetPasiveCommentCount = PasiveCommentCount;
             ViewBag.GetDiscountCouponCount = GetDiscountCouponCount;
             ViewBag.GetTotalMessageCount = GetTotalMessageCount;
 
