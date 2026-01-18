@@ -34,6 +34,11 @@ namespace Udemy.Cargo.BusinessLayer.concrete
             return _cargocustomerDal.GetById(id);
         }
 
+        public Cargocustomer TGetCargocustomerById(string Id)
+        {
+            return _cargocustomerDal.GetCargocustomerById(Id);
+        }
+
         public void TInsert(Cargocustomer entity)
         {
             _cargocustomerDal.Insert(entity);

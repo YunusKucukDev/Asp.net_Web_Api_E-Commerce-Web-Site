@@ -39,7 +39,7 @@ namespace Udemy.WebUI.Services.CommentServices
 
         public async Task<UpdateCommentDto> GetByIdCommentAsync(string id)
         {
-            var responseMessage = await _httpClient.GetAsync("comment/" + id);
+            var responseMessage = await _httpClient.GetAsync("comments/" + id);
             var values = await responseMessage.Content.ReadFromJsonAsync<UpdateCommentDto>();
             return values;
         }

@@ -16,7 +16,7 @@ namespace Udemy.WebUI.Controllers
             _basketService = basketService;
         }
 
-        public async Task<IActionResult>   Index(string code , int discountRate)
+        public async Task<IActionResult>   Index(string code , int discountRate, decimal totalNewPriceWithDiscount)
         {
 
             ViewBag.code = code;
@@ -27,6 +27,7 @@ namespace Udemy.WebUI.Controllers
             var tax = (values.TotalPrice * 10) / 100;
             var totalPriceWithTax = values.TotalPrice + (tax) ;
             ViewBag.totalPriceWithTax = totalPriceWithTax;
+            ViewBag.totalNewPriceWithDiscount = totalNewPriceWithDiscount;
             ViewBag.tax = tax;
             return View();
         }

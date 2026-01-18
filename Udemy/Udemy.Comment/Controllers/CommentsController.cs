@@ -64,5 +64,27 @@ namespace Udemy.Comment.Controllers
             var values = _contex.UserComments.Where(x => x.ProductId == id).ToList();
             return Ok(values);
         }
+
+        [HttpGet("ActiveCommentCount")]
+        public IActionResult ActiveCommentCount()
+        {
+            int value = _contex.UserComments.Where(x => x.Status == true).Count();
+            return Ok(value);
+        }
+
+        [HttpGet("PasiveCommentCount")]
+        public IActionResult PasiveCommentCount()
+        {
+            int value = _contex.UserComments.Where(x => x.Status == false).Count();
+            return Ok(value);
+        }
+
+        [HttpGet("TotalCommentCount")]
+        public IActionResult TotalCommentCount()
+        {
+            int value = _contex.UserComments.Count();
+            return Ok(value);
+        }
+
     }
 }

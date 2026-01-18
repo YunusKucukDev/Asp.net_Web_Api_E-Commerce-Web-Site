@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Udemy.IdentityServer.Settings;
 using Udemy.WebUI.Handlers;
 using Udemy.WebUI.Services.BasketServices;
+using Udemy.WebUI.Services.CargoServices.CargoCompanyServices;
+using Udemy.WebUI.Services.CargoServices.CargocustomerServices;
 using Udemy.WebUI.Services.CatalogServices.AboutServices;
 using Udemy.WebUI.Services.CatalogServices.BrandServices;
 using Udemy.WebUI.Services.CatalogServices.CategoryServices;
@@ -19,6 +21,14 @@ using Udemy.WebUI.Services.CommentServices;
 using Udemy.WebUI.Services.Concrete;
 using Udemy.WebUI.Services.DiscountServices;
 using Udemy.WebUI.Services.Interfaces;
+using Udemy.WebUI.Services.MessageServices;
+using Udemy.WebUI.Services.OrderServices.OrderAddressServices;
+using Udemy.WebUI.Services.OrderServices.OrderOrderingServices;
+using Udemy.WebUI.Services.StatisticServices.CatalogStatisticServices;
+using Udemy.WebUI.Services.StatisticServices.DiscountstatisticService;
+using Udemy.WebUI.Services.StatisticServices.MessageStatisticService;
+using Udemy.WebUI.Services.StatisticServices.UserStatisticService;
+using Udemy.WebUI.Services.UserIdentityServices;
 using Udemy.WebUI.Settings;
 
 namespace Udemy.WebUI
@@ -69,9 +79,59 @@ namespace Udemy.WebUI
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Basket.Path}/");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
+            builder.Services.AddHttpClient<IUserStatisticService, IUserStatisticService>(opt =>
+            {
+                opt.BaseAddress = new Uri(values.IdentityServerUrl);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<ICatalogStatisticService, CatalogStatisticService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IMessageStatisticService, MessageStatisticService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Message.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IDiscountstatisticService, DiscountstatisticService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Discount.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IOrderOrderingService, OrderOrderingService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Order.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
             builder.Services.AddHttpClient<IDiscountService, DiscountService>(opt =>
             {
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Discount.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IOrderAddressService, OrderAddressService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Order.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IMessageService, MessageService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Message.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<ICargoCompanyService, CargoCompanyService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Cargo.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<ICargoCustomerService, ICargoCustomerService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Cargo.Path}/");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IUserIdentitySDervice, UserIdentityService>(opt =>
+            {
+                opt.BaseAddress = new Uri(values.IdentityServerUrl);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             builder.Services.AddHttpClient<ICategoryService, CategoryService>(opt =>
@@ -123,8 +183,6 @@ namespace Udemy.WebUI
             {
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}/");
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-
-            
 
             builder.Services.AddHttpClient<ICommentService, CommentService>(opt =>
             {

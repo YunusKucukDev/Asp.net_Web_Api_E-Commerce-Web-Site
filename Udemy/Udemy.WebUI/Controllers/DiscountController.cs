@@ -33,9 +33,7 @@ namespace Udemy.WebUI.Controllers
             var tax = (basketvalues.TotalPrice * 10) / 100;
             var totalPriceWithTax = basketvalues.TotalPrice + (tax);
             var totalNewPriceWithDiscount = totalPriceWithTax - (totalPriceWithTax / 100 * values);
-            ViewBag.totalNewPriceWithDiscount = totalNewPriceWithDiscount;
-
-            return RedirectToAction("Index", "ShoppingCart", new { code = code , discountRate = values });
+            return RedirectToAction("Index", "ShoppingCart", new { code = code , discountRate = values , totalNewPriceWithDiscount = totalNewPriceWithDiscount });
            
         }
     }

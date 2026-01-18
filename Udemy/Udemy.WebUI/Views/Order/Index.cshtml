@@ -1,0 +1,118 @@
+﻿@using Udemy.DtoLayer.OrderDtos.OrderAddressDtos
+@model CreateOrderAddressDtos
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/UILayout/_UILayout.cshtml";
+}
+
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+	<div class="row px-xl-5">
+		<div class="col-12">
+			<nav class="breadcrumb bg-light mb-30">
+				<a class="breadcrumb-item text-dark" href="#">Home</a>
+				<a class="breadcrumb-item text-dark" href="#">Shop</a>
+				<span class="breadcrumb-item active">Checkout</span>
+			</nav>
+		</div>
+	</div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+	<form method="post">
+	<div class="row px-xl-5">
+		<div class="col-lg-8">
+			<h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Sipariş Teslim Adresi</span></h5>
+			<div class="bg-light p-30 mb-5">
+				<div class="row">
+					<div class="col-md-6 form-group">
+						<label>Adınız</label>
+						<input class="form-control" type="text" asp-for="Name">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Soy Adınız</label>
+							<input class="form-control" type="text" asp-for="Surname">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>E-mail</label>
+							<input class="form-control" type="text" asp-for="Email">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Telefon numarası</label>
+							<input class="form-control" type="text" asp-for="PhoneNumber">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Adres 1</label>
+							<input class="form-control" type="text" asp-for="Detail1">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>adres 2</label>
+							<input class="form-control" type="text" asp-for="Detail2">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Ülke</label>
+						<select class="custom-select" asp-for="Country">
+							<option selected>Türkiye</option>
+							<option>Afghanistan</option>
+							<option>Albania</option>
+							<option>Algeria</option>
+						</select>
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Şehir</label>
+							<input class="form-control" type="text" asp-for="City">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>ilçe</label>
+							<input class="form-control" type="text" asp-for="District">
+					</div>
+					<div class="col-md-6 form-group">
+						<label>ZIP Numarası</label>
+						<input class="form-control" type="text" placeholder="35000" asp-for="ZipCode">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Sipariş Özeti</span></h5>
+
+			@await Component.InvokeAsync("_OrderSummaryViewComponentPartial")
+
+			<div class="mb-5">
+				<h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
+				<div class="bg-light p-30">
+					<div class="form-group">
+						<div class="custom-control custom-radio">
+							<input type="radio" class="custom-control-input" name="payment" id="paypal">
+							<label class="custom-control-label" for="paypal">Paypal</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="custom-control custom-radio">
+							<input type="radio" class="custom-control-input" name="payment" id="directcheck">
+							<label class="custom-control-label" for="directcheck">Direct Check</label>
+						</div>
+					</div>
+					<div class="form-group mb-4">
+						<div class="custom-control custom-radio">
+							<input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+							<label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+						</div>
+					</div>
+					<button class="btn btn-block btn-primary font-weight-bold py-3">Ödeme Adımına Geç</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+
+
+

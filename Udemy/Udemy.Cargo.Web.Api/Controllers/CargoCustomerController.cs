@@ -45,6 +45,7 @@ namespace Udemy.Cargo.Web.Api.Controllers
                 Name=dto.Name,
                 Phone= dto.Phone,
                 Surname=dto.Surname,
+                UserCustomerId=dto.UserCustomerId,
             };
             _service.TInsert(cargoCustomer);
             return Ok("Cargo Customer Başarıyla oluşturuldu");
@@ -70,10 +71,18 @@ namespace Udemy.Cargo.Web.Api.Controllers
                 Name=dto.Name,
                 Phone=dto.Phone,    
                 Surname=dto.Surname,
+                UserCustomerId = dto.UserCustomerId,
             };
             _service.TUpdate(customer);
             return Ok("Güncelleme işlemi başarılı");
         }
+
+        [HttpGet("GetCargoCustomerById")]
+        public IActionResult GetCargoCustomerById(string id)
+        {
+            return Ok(_service.TGetCargocustomerById(id));
+        }
+
 
     }
 }

@@ -23,7 +23,7 @@ namespace Udemy.WebUI.Services.DiscountServices
         public async Task<int> GetDiscountCouponRate(string code)
         {
             var responseMessage = await _httpclient.GetAsync($"discounts/GetDiscountCouponRate/{code}");
-            var values = responseMessage.Content.ReadFromJsonAsync<int>();
+            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
             return values;
         }
     }

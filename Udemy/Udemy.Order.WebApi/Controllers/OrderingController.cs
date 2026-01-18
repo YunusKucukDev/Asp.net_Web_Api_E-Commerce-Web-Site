@@ -13,6 +13,7 @@ namespace Udemy.Order.WebApi.Controllers
     public class OrderingController : ControllerBase
     {
         private readonly IMediator _mediator;
+        
 
         public OrderingController(IMediator mediator)
         {
@@ -23,6 +24,13 @@ namespace Udemy.Order.WebApi.Controllers
         public async Task<IActionResult> OrderderingList()
         {
             var values = await _mediator.Send(new GetOrderingQuery());
+            return Ok(values);
+        }
+
+        [HttpGet("GetOrderingByUserId")]
+        public async Task<IActionResult> GetOrderingByUserId(string id)
+        {
+            var values = await _mediator.Send(new GetOrderingByUserIdQuery(id));
             return Ok(values);
         }
 

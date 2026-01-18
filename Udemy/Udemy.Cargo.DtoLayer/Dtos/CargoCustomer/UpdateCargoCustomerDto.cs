@@ -16,5 +16,6 @@ namespace Udemy.Cargo.DtoLayer.Dtos.NewFolder
         public string Districk { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
+        public string UserCustomerId { get; set; }
     }
 }

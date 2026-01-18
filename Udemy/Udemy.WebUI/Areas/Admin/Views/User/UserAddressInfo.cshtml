@@ -1,0 +1,31 @@
+﻿@using Udemy.DtoLayer.CargoDtos.CargoCustomerDtos
+@model GetCargoCustomerById
+@{
+    ViewData["Title"] = "UserAddressInfo";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="chart-box">
+                <h4>Kategori Listesi</h4>
+                <p>Kategori ile ilgili işlemlerinizi AŞağıdaki tablo üzerinden düzenleyebilirsiniz</p>
+                <div class="bs-example" data-example-id="bordered-table">
+                    <div class="container">
+                        <h3>kullanıcı Profil Bilgisi</h3>
+                        <div class="alert alert-info">Kullanıcı Id: @Model.CargocustomerId</div>
+                        <div class="alert alert-warning">Kullanıcı Adı: @Model.Name</div>
+                        <div class="alert alert-info">Kullanıcı Soyadı: @Model.Surname</div>
+                        <div class="alert alert-warning">Email: @Model.Email</div>
+                        <div class="alert alert-warning">Telefon: @Model.Phone  </div>
+                        <div class="alert alert-warning"> İlçe/Şehir: @Model.Districk / @Model.City</div>
+                        <div class="alert alert-warning">Adres: @Model.Address </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

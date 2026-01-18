@@ -14,6 +14,7 @@ using Udemy.Catalog.Services.OfferDiscountService;
 using Udemy.Catalog.Services.ProductDetailServices;
 using Udemy.Catalog.Services.ProductImageServices;
 using Udemy.Catalog.Services.ProductServices;
+using Udemy.Catalog.Services.StatisticServices;
 using Udemy.Catalog.settings;
 
 namespace Udemy.Catalog
@@ -44,6 +45,7 @@ namespace Udemy.Catalog
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddScoped<IAboutServices, AboutServices>();
             builder.Services.AddScoped<IContactService, ContactService>();
+            builder.Services.AddScoped<IStatisticServices, StatisticService>();
 
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

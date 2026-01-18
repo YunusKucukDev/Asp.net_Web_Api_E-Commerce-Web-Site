@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Udemy.Discount.Dtos;
 using Udemy.Discount.Services;
 
@@ -40,10 +41,10 @@ namespace Udemy.Discount.Controllers
             return Ok(values);
         }
 
-        [HttpGet("GetDiscountCouponRate")]
-        public  IActionResult GetDiscountCouponRate(string code)
+        [HttpGet("GetDiscountCouponRate/{code}")]
+        public  async Task<IActionResult> GetDiscountCouponRate(string code)
         {
-            var values =  _service.GetDiscountCouponRate(code);
+            var values = await  _service.GetDiscountCouponRate(code);
             return Ok(values);
         }
 
@@ -68,5 +69,12 @@ namespace Udemy.Discount.Controllers
             return Ok("Kupon Başarıyla Güncellendi");
 
         }
-    }//public int GetDiscountCouponRate(string code)
+
+        [HttpGet("GetDiscountCouponCount")]
+        public async Task<IActionResult> GetDiscountCouponCount()
+        {
+            var values = await _service.GetDiscountCouponCount();
+            return Ok(values);
+        }
+    }
 }

@@ -9,5 +9,6 @@ namespace Udemy.Cargo.DataAccessLayer.Abstaction
 {
     public interface ICargoCustomerDal :IGenericDal<Cargocustomer>
     {
+        Cargocustomer GetCargocustomerById(string Id);
     }
 }

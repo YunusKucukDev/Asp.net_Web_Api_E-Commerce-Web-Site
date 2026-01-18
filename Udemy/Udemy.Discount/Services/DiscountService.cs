@@ -73,15 +73,27 @@ namespace Udemy.Discount.Services
             }
         }
 
-        public int GetDiscountCouponRate(string code)
+        public async Task<int> GetDiscountCouponCount()
         {
-            string query = "Select Rate * from Coupons Where Code=@code";
-            var parameters = new DynamicParameters();
-            parameters.Add("@code", code);
+            string query = "Select Count * From Coupons ";
             using (var connection = _contex.CreateConnection())
             {
-                var values =  connection.QueryFirstOrDefault<int>(query, parameters);
+                var values = await connection.QueryFirstOrDefaultAsync<int>(query);
                 return values;
+            }
+        }
+
+        public async Task<int> GetDiscountCouponRate(string code)
+        {
+            string query = "SELECT Rate FROM Coupons WHERE Code = @code";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@code", code);
+
+            using (var connection = _contex.CreateConnection())
+            {
+                var value = await connection.QueryFirstOrDefaultAsync<int>(query, parameters);
+                return value; // Kupon yoksa 0 döner
             }
         }
 
@@ -106,5 +118,8 @@ namespace Udemy.Discount.Services
                 await connection.ExecuteAsync(query, parameters);
             }
         }
+
+       
+        
     }
 }

@@ -36,7 +36,6 @@
         }
       ]
     },
-
     //Order MikroServisi
     {
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
@@ -88,6 +87,24 @@
         {
           "Host": "localhost",
           "Port": 7074
+        }
+      ]
+    },
+    //Message Mikroservisi
+    {
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamPathTemplate": "/services/Message/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "UpstreamScheme": "https",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OcelotAuthenticationSchemeKey",
+        "AllowedScopes": [ "MessageFullPermission" ]
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7078
         }
       ]
     },

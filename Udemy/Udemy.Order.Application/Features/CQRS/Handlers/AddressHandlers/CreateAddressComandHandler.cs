@@ -22,9 +22,17 @@ namespace Udemy.Order.Application.Features.CQRS.Handlers.AddressHandlers
             await _repository.CreateAsync(new Address
             {
                 City = createAddressComand.City,
-                Detail = createAddressComand.Detail,
+                Detail1 = createAddressComand.Detail1,
                 District = createAddressComand.District,
-                UserId = createAddressComand.UserId
+                UserId = createAddressComand.UserId,
+                Country= createAddressComand.Country,  
+                Email = createAddressComand.Email,
+                Description = createAddressComand.Description,  
+                Detail2 = createAddressComand.Detail2,
+                Name = createAddressComand.Name,
+                PhoneNumber = createAddressComand.PhoneNumber,
+                Surname= createAddressComand.Surname,
+                ZipCode = createAddressComand.ZipCode,
             });
         }
     }

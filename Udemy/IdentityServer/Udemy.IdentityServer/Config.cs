@@ -22,6 +22,7 @@ namespace Udemy.IdentityServer
             new ApiResource("ResourcePayment"){Scopes ={"PaymentFullPermission"}},
             new ApiResource("ResourceImages"){Scopes ={"ImagesFullPermission"}},
             new ApiResource("ResourceOcelot"){Scopes ={"OcelotFullPermission"}},
+            new ApiResource("ResourceMessage"){Scopes ={"MessageFullPermission"}},
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -44,6 +45,7 @@ namespace Udemy.IdentityServer
             new ApiScope("CommentFullPermission","Full authority for Comment operations"),
             new ApiScope("PaymentFullPermission","Full authority for Payment operations"),
             new ApiScope("ImagesFullPermission","Full authority for Images operations"),
+            new ApiScope("MessageFullPermission","Full authority for Message operations"),
             new ApiScope("OcelotFullPermission","Full authority for ocelot operations"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
             new ApiScope(IdentityServerConstants.StandardScopes.OfflineAccess)
@@ -80,6 +82,9 @@ namespace Udemy.IdentityServer
                     "OcelotFullPermission",
                     "CommentFullPermission",
                     "PaymentFullPermission",
+                    "OrderFullPermission",
+                    "MessageFullPermission",
+                    "CargoFullPermission",
 
                     IdentityServerConstants.LocalApi.ScopeName,
                     IdentityServerConstants.StandardScopes.OpenId,
@@ -111,6 +116,7 @@ namespace Udemy.IdentityServer
                     "CargoFullPermission",
                     "BasketFullPermission",
                     "CommentFullPermission",
+                    "CargoFullPermission",
 
                     IdentityServerConstants.LocalApi.ScopeName,
                     IdentityServerConstants.StandardScopes.OpenId,

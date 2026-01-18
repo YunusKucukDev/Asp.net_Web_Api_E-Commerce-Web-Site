@@ -10,8 +10,9 @@ namespace Udemy.Discount.Services
         Task UpdateCouponAsync(UpdateCouponDto updateCouponDto);
         Task<GetByIdCouponDto> GetByIdCouponAsync(int id);
         Task<ResutCouponDto> GetCodeDetailByCodeAsync(string code);
+        Task<int> GetDiscountCouponRate(string code);
+        Task<int> GetDiscountCouponCount();
 
-        int GetDiscountCouponRate(string code);
     }
         
 }

@@ -22,6 +22,7 @@ namespace Udemy.Order.WebApi
             });
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped(typeof(IOrderingRepository), typeof(OrderingRepository));
             builder.Services.AddAplicationServices(builder.Configuration);
             builder.Services.AddDbContext<OrderContex>();
             #region

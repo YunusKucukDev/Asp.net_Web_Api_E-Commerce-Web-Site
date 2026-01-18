@@ -9,5 +9,6 @@ namespace Udemy.Cargo.BusinessLayer.absrtact
 {
     public interface ICargoCustomerService : IGenericService<Cargocustomer>
     {
+        Cargocustomer TGetCargocustomerById(string Id);
     }
 }
