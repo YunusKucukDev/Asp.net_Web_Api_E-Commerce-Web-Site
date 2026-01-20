@@ -17,7 +17,7 @@ namespace Udemy.WebUI.Areas.Admin.ViewComponents.AdminLayoutViewComponents
             _userService = userService;
         }
 
-        public async Task<IViewComponentResult> Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = await _userService.GetUserInfo();
             int messageCount = await _messageService.GetTotalMessageCountByReceiverId(user.Id);

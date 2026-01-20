@@ -31,9 +31,13 @@ using Udemy.WebUI.Services.StatisticServices.MessageStatisticService;
 using Udemy.WebUI.Services.StatisticServices.UserStatisticService;
 using Udemy.WebUI.Services.UserIdentityServices;
 using Udemy.WebUI.Settings;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Udemy.WebUI
 {
+
+    
+
     public class Program
     {
         public static void Main(string[] args)
@@ -57,7 +61,6 @@ namespace Udemy.WebUI
             builder.Services.AddHttpClient<IIdentityService, IdentityService>();
 
             builder.Services.AddHttpClient();
-            builder.Services.AddControllersWithViews();
 
             builder.Services.Configure<ClientSettings>(builder.Configuration.GetSection("ClientSettings"));
             builder.Services.Configure<ServiceApiSettings>(builder.Configuration.GetSection("ServiceApiSettings"));
@@ -200,7 +203,33 @@ namespace Udemy.WebUI
                 opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}/");
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
+
+
+
+            builder.Services.AddLocalization(opt =>
+            {
+                opt.ResourcesPath = "Resources";       //  MultiLanguage
+
+            }); 
+
+            builder.Services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization(); //  MultiLanguage
+
+
+
             var app = builder.Build();
+
+            var supportedCultures = new[] { "en", "tr", "de", "fr" };
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[1])  // MultiLanguage
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions); // MultiLanguage
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            );
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -215,12 +244,6 @@ namespace Udemy.WebUI
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-            );
-
             
             app.MapControllerRoute(
                 name: "default",
