@@ -12,5 +12,6 @@ namespace Udemy.Message.Services
         Task UpdateMessageAsync(UpdateMessageDto updateMessageDto);
         Task<GetByIdMessageDto> GetByIdMessageAsync(int id);
         Task<int> GetTotalMessageCount();
+        Task<int> GetTotalMessageCountByReceiverId(string id);
     }
 }

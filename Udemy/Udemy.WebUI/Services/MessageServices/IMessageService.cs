@@ -6,6 +6,8 @@ namespace Udemy.WebUI.Services.MessageServices
     {
         Task<List<ResultInboxDto>> GetInboxMessageAsync(string id);
         Task<List<ResultSendBoxDto>> GetSendBoxMessageAsync(string id);
-        
+        Task<int> GetTotalMessageCountByReceiverId(string id);
+
+
     }
 }

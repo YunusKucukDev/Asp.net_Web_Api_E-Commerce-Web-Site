@@ -1,0 +1,6 @@
+@Udemy.RabbitMQMessageApi_HostAddress = http://localhost:5109
+
+GET {{Udemy.RabbitMQMessageApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

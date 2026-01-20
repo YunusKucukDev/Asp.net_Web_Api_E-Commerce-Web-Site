@@ -1,11 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Udemy.WebUI.Services.Interfaces;
+using Udemy.WebUI.Services.MessageServices;
 
 namespace Udemy.WebUI.Areas.Admin.ViewComponents.AdminLayoutViewComponents
 {
     public class _AdminLayoutHeaderComponentPartial :ViewComponent
     {
-        public IViewComponentResult Invoke()
+
+        private readonly IMessageService _messageService;
+        private readonly IUserService _userService;
+
+        public _AdminLayoutHeaderComponentPartial(IMessageService messageService, IUserService userService)
         {
+            _messageService = messageService;
+            _userService = userService;
+        }
+
+        public async Task<IViewComponentResult> Invoke()
+        {
+            var user = await _userService.GetUserInfo();
+            int messageCount = await _messageService.GetTotalMessageCountByReceiverId(user.Id);
+            ViewBag.messageCount = messageCount;
             return View();
         }
     }

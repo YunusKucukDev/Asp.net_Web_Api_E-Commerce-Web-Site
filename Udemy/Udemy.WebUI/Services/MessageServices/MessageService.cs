@@ -27,5 +27,12 @@ namespace Udemy.WebUI.Services.MessageServices
             var values = await responseMessage.Content.ReadFromJsonAsync<List<ResultSendBoxDto>>();
             return values;
         }
+
+        public async Task<int> GetTotalMessageCountByReceiverId(string id)
+        {
+            var responseMessage = await _httpClient.GetAsync("https://localhost:7078/api/UserMessages/GetTotalMessageCountByReceiverId?id=" + id);
+            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
+            return values;
+        }
     }
 }
